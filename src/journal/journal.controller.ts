@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { CreatePageDto } from './dto/create-page.dto';
 import { CreateJournalDto } from './dto/createJournal.dto';
 import { JournalService } from './journal.service';
 import { JournalDocument } from './schema/journal.schema';
@@ -73,5 +74,39 @@ export class JournalController {
   @Delete('/:id/delete')
   async deleteJournal(@Param('id') id: string): Promise<JournalDocument> {
     return this.journalService.deleteJournal(id);
+  }
+
+  /**
+   * Creates a new page in a journal.
+   * @param id The id of the journal to add a page to.
+   * @param createPageDto The data to create a page.
+   * @param createPageDto.title The title of the page.
+   * @param createPageDto.content (optional) The content of the page.
+   * @param createPageDto.date The date of the page.
+   * @returns The updated journal.
+   */
+  @Post('/:id/page/create')
+  async createPage(
+    @Param('id') id: string,
+    @Body() createPageDto: CreatePageDto,
+  ): Promise<JournalDocument> {
+    return this.journalService.addPage(id, createPageDto);
+  }
+
+  @Patch('/:id/page/:pageId/update')
+  async updatePage(
+    @Param('id') id: string,
+    @Param('pageId') pageId: string,
+    @Body() createPageDto: Partial<CreatePageDto>,
+  ): Promise<JournalDocument> {
+    return this.journalService.updatePage(id, pageId, createPageDto);
+  }
+
+  @Delete('/:id/page/:pageId/delete')
+  async deletePage(
+    @Param('id') id: string,
+    @Param('pageId') pageId: string,
+  ): Promise<JournalDocument> {
+    return this.journalService.deletePage(id, pageId);
   }
 }

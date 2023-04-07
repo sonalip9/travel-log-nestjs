@@ -1,13 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type JournalDocument = HydratedDocument<Journal>;
 
 export type Page = {
-  title: string;
   content: string;
   date: Date;
-  pageNumber: number;
+  title: string;
 };
 
 @Schema({
@@ -34,12 +33,14 @@ export class Journal {
 
   @Prop({
     type: [
-      {
-        content: { type: String },
-        date: { required: true, type: Date },
-        pageNumber: { required: true, type: Number },
-        title: { required: true, type: String },
-      },
+      new mongoose.Schema(
+        {
+          content: { type: String },
+          date: { required: true, type: Date },
+          title: { required: true, type: String },
+        },
+        { timestamps: true },
+      ),
     ],
   })
   pages: Page[];
