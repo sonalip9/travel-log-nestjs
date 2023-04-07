@@ -2,14 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { JournalController, JournalService } from '@journal';
+import { JournalModule } from '@journal';
 
 @Module({
-  controllers: [JournalController],
+  controllers: [],
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_DB),
+    JournalModule,
   ],
-  providers: [JournalService],
+  providers: [],
 })
 export class AppModule {}
