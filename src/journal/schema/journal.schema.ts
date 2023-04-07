@@ -10,7 +10,10 @@ export type Page = {
   pageNumber: number;
 };
 
-@Schema()
+@Schema({
+  collection: 'journals',
+  timestamps: true,
+})
 export class Journal {
   @Prop({
     required: true,
