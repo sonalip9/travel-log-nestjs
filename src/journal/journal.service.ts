@@ -95,10 +95,16 @@ export class JournalService {
     pageId: string,
     page: Partial<Page>,
   ): Promise<JournalDocument> {
+    // Create the update query.
+    const updateQuery = {};
+    Object.keys(page).forEach((key) => {
+      updateQuery[`pages.$.${key}`] = page[key];
+    });
+
     return this.journalModel
-      .findByIdAndUpdate(
+      .findOneAndUpdate(
         { _id: id, 'pages._id': pageId },
-        { $set: { 'pages.$': page } },
+        { $set: updateQuery },
         { new: true },
       )
       .exec();
