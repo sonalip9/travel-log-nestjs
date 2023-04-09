@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { CreateJournalDto } from './dto/createJournal.dto';
-import { Journal, Page } from './schema/journal.schema';
+import { Journal, JournalDocument } from './schema/journal.schema';
+import { Page } from './schema/page.schema';
 
 @Injectable()
 export class JournalService {
@@ -13,20 +13,20 @@ export class JournalService {
 
   /**
    * Creates a new journal.
-   * @param createJournalDto The data to create a journal.
-   * @param createJournalDto.title The title of the journal.
-   * @param createJournalDto.description (optional) The description of the journal.
+   * @param journalData The data to create a journal.
+   * @param journalData.title The title of the journal.
+   * @param journalData.description (optional) The description of the journal.
    * @returns The created journal.
    */
-  async createJournal(createJournalDto: CreateJournalDto) {
-    return this.journalModel.create(createJournalDto);
+  async createJournal(journalData: Journal): Promise<JournalDocument> {
+    return this.journalModel.create(journalData);
   }
 
   /**
    * Fetches all journals from the database.
    * @returns List of all journals.
    */
-  async getAllJournals() {
+  async getAllJournals(): Promise<JournalDocument[]> {
     return this.journalModel.find().exec();
   }
 
@@ -35,20 +35,23 @@ export class JournalService {
    * @param id The id of the journal to fetch.
    * @returns THe journal with the given id.
    */
-  async getJournal(id: string) {
+  async getJournal(id: string): Promise<JournalDocument> {
     return this.journalModel.findById(id);
   }
 
   /**
    * Updates a journal with the given id.
    * @param id The id of the journal to update.
-   * @param createJournalDto The data to update the journal with.
-   * @param createJournalDto.title (optional) The title of the journal.
-   * @param createJournalDto.description (optional) The description of the journal.
+   * @param updateJournalData The data to update the journal with.
+   * @param updateJournalData.title (optional) The title of the journal.
+   * @param updateJournalData.description (optional) The description of the journal.
    * @returns The updated journal.
    */
-  async updateJournal(id: string, createJournalDto: Partial<CreateJournalDto>) {
-    return this.journalModel.findByIdAndUpdate(id, createJournalDto, {
+  async updateJournal(
+    id: string,
+    updateJournalData: Partial<Journal>,
+  ): Promise<JournalDocument> {
+    return this.journalModel.findByIdAndUpdate(id, updateJournalData, {
       new: true,
     });
   }
@@ -58,20 +61,20 @@ export class JournalService {
    * @param id The id of the journal to delete.
    * @returns The deleted journal.
    */
-  async deleteJournal(id: string) {
+  async deleteJournal(id: string): Promise<JournalDocument> {
     return this.journalModel.findByIdAndDelete(id);
   }
 
   /**
    * Creates a new page in a journal.
    * @param id The id of the journal to add a page to.
-   * @param createPageDto The data to create a page.
-   * @param createPageDto.title The title of the page.
-   * @param createPageDto.content (optional) The content of the page.
-   * @param createPageDto.date The date of the page.
+   * @param page The data to create a page.
+   * @param page.title The title of the page.
+   * @param page.content (optional) The content of the page.
+   * @param page.date The date of the page.
    * @returns The updated journal.
    */
-  async addPage(id: string, page: Page) {
+  async addPage(id: string, page: Page): Promise<JournalDocument> {
     return this.journalModel
       .findByIdAndUpdate(id, { $push: { pages: page } }, { new: true })
       .exec();
@@ -87,7 +90,11 @@ export class JournalService {
    * @param page.date (optional) The date of the page.
    * @returns The updated journal.
    */
-  async updatePage(id: string, pageId: string, page: Partial<Page>) {
+  async updatePage(
+    id: string,
+    pageId: string,
+    page: Partial<Page>,
+  ): Promise<JournalDocument> {
     return this.journalModel
       .findByIdAndUpdate(
         { _id: id, 'pages._id': pageId },
@@ -103,7 +110,7 @@ export class JournalService {
    * @param pageId The id of the page to delete.
    * @returns The updated journal.
    */
-  async deletePage(id: string, pageId: string) {
+  async deletePage(id: string, pageId: string): Promise<JournalDocument> {
     return this.journalModel
       .findByIdAndUpdate(id, { $pull: { pages: { _id: pageId } } })
       .exec();
