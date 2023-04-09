@@ -16,10 +16,10 @@ describe('JournalController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/journals/healthCheck (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/journals/healthCheck')
       .expect(200)
-      .expect('Hello World!');
+      .expect('Journals service is up and running!');
   });
 });
