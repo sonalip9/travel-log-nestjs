@@ -10,6 +10,7 @@ import {
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -26,6 +27,12 @@ import { JournalsDocument, JournalsDto } from './schema/journals.schema';
 @ApiTags('Journal')
 export class JournalsController {
   constructor(private readonly journalService: JournalsService) {}
+
+  @Get('/healthCheck')
+  @ApiExcludeEndpoint()
+  healthCheck(): string {
+    return 'Journals service is up and running!';
+  }
 
   /**
    * Creates a new journal.
