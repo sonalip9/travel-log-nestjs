@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { JournalModule } from '@journal';
+import { JournalsModule } from '@journals';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_DB),
-    JournalModule,
+    JournalsModule,
   ],
 })
 export class AppModule {}

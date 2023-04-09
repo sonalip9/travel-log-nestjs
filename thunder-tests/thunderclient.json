@@ -16,7 +16,7 @@
     "params": [],
     "sortNum": 10000,
     "tests": [],
-    "url": "{{base_url}}/journal/create"
+    "url": "{{base_url}}/journals"
   },
   {
     "_id": "b3309823-a688-4c36-8b1c-ad1f7d2253e3",
@@ -30,7 +30,7 @@
     "params": [],
     "sortNum": 20000,
     "tests": [],
-    "url": "{{base_url}}/journal/all"
+    "url": "{{base_url}}/journals/all"
   },
   {
     "_id": "48dec2e0-0490-4f9f-b7b9-26e3a546e999",
@@ -50,7 +50,7 @@
     ],
     "sortNum": 30000,
     "tests": [],
-    "url": "{{base_url}}/journal/{id}"
+    "url": "{{base_url}}/journals/{id}"
   },
   {
     "_id": "f8c43d22-320d-44a3-8a00-a47453de5ab4",
@@ -81,7 +81,7 @@
     ],
     "sortNum": 40000,
     "tests": [],
-    "url": "{{base_url}}/journal/{id}/update"
+    "url": "{{base_url}}/journals/{id}"
   },
   {
     "_id": "1592331f-bffa-4c06-bd20-0ff1588516ca",
@@ -107,7 +107,7 @@
     ],
     "sortNum": 50000,
     "tests": [],
-    "url": "{{base_url}}/journal/{id}/delete"
+    "url": "{{base_url}}/journals/{id}"
   },
   {
     "_id": "741d0a29-c175-4d5c-9a4c-6d84ec818f85",
@@ -132,7 +132,7 @@
     ],
     "sortNum": 60000,
     "tests": [],
-    "url": "{{base_url}}/journal/{id}/page/create"
+    "url": "{{base_url}}/journals/{id}/pages"
   },
   {
     "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
@@ -162,31 +162,31 @@
     ],
     "sortNum": 80000,
     "tests": [],
-    "url": "{{base_url}}/journal/{id}/page/{pageId}/update"
+    "url": "{{base_url}}/journals/{id}/pages/{pageId}"
   },
   {
     "_id": "b2b5f9a1-5b1f-4b1f-8f9f-1f1f2f3f4f5f",
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
-    "name": "Delete a page",
-    "url": "{{base_url}}/journal/{id}/page/{pageId}/delete",
-    "method": "DELETE",
-    "sortNum": 90000,
     "created": "2023-04-09T16:25:35.000Z",
-    "modified": "2023-04-09T16:29:28.369Z",
     "headers": [],
+    "method": "DELETE",
+    "modified": "2023-04-09T16:29:28.369Z",
+    "name": "Delete a page",
     "params": [
       {
+        "isPath": true,
         "name": "id",
-        "value": "64312e9a572f0b72bce643dd",
-        "isPath": true
+        "value": "64312e9a572f0b72bce643dd"
       },
       {
+        "isPath": true,
         "name": "pageId",
-        "value": "6432e4244b6603bbf4ad7c66",
-        "isPath": true
+        "value": "6432e4244b6603bbf4ad7c66"
       }
     ],
-    "tests": []
+    "sortNum": 90000,
+    "tests": [],
+    "url": "{{base_url}}/journals/{id}/pages/{pageId}"
   }
 ]

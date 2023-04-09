@@ -6,7 +6,7 @@ import { HydratedDocument } from 'mongoose';
  * The Page schema.
  */
 @Schema({ timestamps: true })
-export class Page {
+export class Pages {
   @ApiProperty({
     description: 'The content of the page.',
     example: 'This is my first page.',
@@ -38,7 +38,7 @@ export class Page {
 /**
  * The DTO for the Page model.
  */
-export class PageDto extends Page {
+export class PagesDto extends Pages {
   @ApiProperty({
     description: 'The id of the page.',
     example: '60e9b9e0f2f2c8a0b0e9b9e0',
@@ -64,6 +64,6 @@ export class PageDto extends Page {
   updatedAt: Date;
 }
 
-export type PageDocument = HydratedDocument<typeof Page>;
+export type PagesDocument = HydratedDocument<typeof Pages>;
 
-export const PageSchema = SchemaFactory.createForClass(Page);
+export const PagesSchema = SchemaFactory.createForClass(Pages);

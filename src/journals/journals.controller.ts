@@ -17,15 +17,15 @@ import {
   PartialType,
 } from '@nestjs/swagger';
 
+import { CreateJournalDto } from './dto/create-journal.dto';
 import { CreatePageDto } from './dto/create-page.dto';
-import { CreateJournalDto } from './dto/createJournal.dto';
-import { JournalService } from './journal.service';
-import { JournalDocument, JournalDto } from './schema/journal.schema';
+import { JournalsService } from './journals.service';
+import { JournalsDocument, JournalsDto } from './schema/journals.schema';
 
-@Controller('/journal')
+@Controller('/journals')
 @ApiTags('Journal')
-export class JournalController {
-  constructor(private readonly journalService: JournalService) {}
+export class JournalsController {
+  constructor(private readonly journalService: JournalsService) {}
 
   /**
    * Creates a new journal.
@@ -34,16 +34,19 @@ export class JournalController {
    * @param createJournalDto.description (optional) The description of the journal.
    * @returns The created journal.
    */
-  @Post('/create')
+  @Post()
   @ApiOperation({ summary: 'Creates a new journal.' })
   @ApiBody({
     description: 'The data to create a journal.',
     type: CreateJournalDto,
   })
-  @ApiCreatedResponse({ description: 'The created journal.', type: JournalDto })
+  @ApiCreatedResponse({
+    description: 'The created journal.',
+    type: JournalsDto,
+  })
   async createJournal(
     @Body() createJournalDto: CreateJournalDto,
-  ): Promise<JournalDocument> {
+  ): Promise<JournalsDocument> {
     return this.journalService.createJournal(createJournalDto);
   }
 
@@ -53,8 +56,8 @@ export class JournalController {
    */
   @Get('/all')
   @ApiOperation({ summary: 'Fetches all journals from the database.' })
-  @ApiOkResponse({ description: 'List of all journals.', type: [JournalDto] })
-  async getAllJournals(): Promise<JournalDocument[]> {
+  @ApiOkResponse({ description: 'List of all journals.', type: [JournalsDto] })
+  async getAllJournals(): Promise<JournalsDocument[]> {
     return this.journalService.getAllJournals();
   }
 
@@ -68,9 +71,9 @@ export class JournalController {
   @ApiParam({ description: 'The id of the journal to fetch.', name: 'id' })
   @ApiOkResponse({
     description: 'The journal with the given id.',
-    type: JournalDto,
+    type: JournalsDto,
   })
-  async getJournal(@Param('id') id: string): Promise<JournalDocument> {
+  async getJournal(@Param('id') id: string): Promise<JournalsDocument> {
     return this.journalService.getJournal(id);
   }
 
@@ -82,7 +85,7 @@ export class JournalController {
    * @param createJournalDto.description (optional) The description of the journal.
    * @returns
    */
-  @Patch('/:id/update')
+  @Patch('/:id')
   @ApiOperation({ summary: 'Updates a journal with the given id.' })
   @ApiParam({ description: 'The id of the journal to update.', name: 'id' })
   @ApiBody({
@@ -91,12 +94,12 @@ export class JournalController {
   })
   @ApiOkResponse({
     description: 'The updated journal.',
-    type: JournalDto,
+    type: JournalsDto,
   })
   async updateJournal(
     @Param('id') id: string,
     @Body() createJournalDto: Partial<CreateJournalDto>,
-  ): Promise<JournalDocument> {
+  ): Promise<JournalsDocument> {
     return this.journalService.updateJournal(id, createJournalDto);
   }
 
@@ -109,10 +112,10 @@ export class JournalController {
   @ApiParam({ description: 'The id of the journal to delete.', name: 'id' })
   @ApiOkResponse({
     description: 'The deleted journal.',
-    type: JournalDto,
+    type: JournalsDto,
   })
-  @Delete('/:id/delete')
-  async deleteJournal(@Param('id') id: string): Promise<JournalDocument> {
+  @Delete('/:id')
+  async deleteJournal(@Param('id') id: string): Promise<JournalsDocument> {
     return this.journalService.deleteJournal(id);
   }
 
@@ -125,7 +128,7 @@ export class JournalController {
    * @param createPageDto.date The date of the page.
    * @returns The updated journal.
    */
-  @Post('/:id/page/create')
+  @Post('/:id/pages')
   @ApiOperation({ summary: 'Creates a new page in a journal.' })
   @ApiParam({
     description: 'The id of the journal to add a page to.',
@@ -137,12 +140,12 @@ export class JournalController {
   })
   @ApiCreatedResponse({
     description: 'The updated journal.',
-    type: JournalDto,
+    type: JournalsDto,
   })
   async createPage(
     @Param('id') id: string,
     @Body() createPageDto: CreatePageDto,
-  ): Promise<JournalDocument> {
+  ): Promise<JournalsDocument> {
     return this.journalService.addPage(id, createPageDto);
   }
 
@@ -156,7 +159,7 @@ export class JournalController {
    * @param createPageDto.date (optional) The date of the page.
    * @returns The updated journal.
    */
-  @Patch('/:id/page/:pageId/update')
+  @Patch('/:id/pages/:pageId')
   @ApiOperation({ summary: 'Updates a page in a journal.' })
   @ApiParam({
     description: 'The id of the journal to update a page in.',
@@ -172,13 +175,13 @@ export class JournalController {
   })
   @ApiOkResponse({
     description: 'The updated journal.',
-    type: JournalDto,
+    type: JournalsDto,
   })
   async updatePage(
     @Param('id') id: string,
     @Param('pageId') pageId: string,
     @Body() createPageDto: Partial<CreatePageDto>,
-  ): Promise<JournalDocument> {
+  ): Promise<JournalsDocument> {
     return this.journalService.updatePage(id, pageId, createPageDto);
   }
 
@@ -188,7 +191,7 @@ export class JournalController {
    * @param pageId The id of the page to delete.
    * @returns The updated journal with the deleted page.
    */
-  @Delete('/:id/page/:pageId/delete')
+  @Delete('/:id/pages/:pageId')
   @ApiOperation({ summary: 'Deletes a page from a journal.' })
   @ApiParam({
     description: 'The id of the journal to delete a page from.',
@@ -200,12 +203,12 @@ export class JournalController {
   })
   @ApiOkResponse({
     description: 'The updated journal with the deleted page.',
-    type: JournalDto,
+    type: JournalsDto,
   })
   async deletePage(
     @Param('id') id: string,
     @Param('pageId') pageId: string,
-  ): Promise<JournalDocument> {
+  ): Promise<JournalsDocument> {
     return this.journalService.deletePage(id, pageId);
   }
 }

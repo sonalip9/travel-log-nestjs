@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument, Types } from 'mongoose';
 
-import { PageDto, PageSchema } from './page.schema';
+import { PagesDto, PagesSchema } from './pages.schema';
 
 /**
  * The journal schema.
@@ -11,7 +11,7 @@ import { PageDto, PageSchema } from './page.schema';
   collection: 'journals',
   timestamps: true,
 })
-export class Journal {
+export class Journals {
   @ApiProperty({
     description: 'The title of the journal.',
     example: 'My first journal',
@@ -52,16 +52,16 @@ export class Journal {
     ],
     isArray: true,
     required: false,
-    type: [PageDto],
+    type: [PagesDto],
   })
-  @Prop({ default: [], required: false, type: [PageSchema] })
-  pages?: PageDto[];
+  @Prop({ default: [], required: false, type: [PagesSchema] })
+  pages?: PagesDto[];
 }
 
 /**
  * The DTO for the Journal model.
  */
-export class JournalDto extends Journal {
+export class JournalsDto extends Journals {
   @ApiProperty({
     description: 'The id of the journal.',
     example: '60e9b9e0f2f2c8a0b0e9b9e0',
@@ -87,6 +87,6 @@ export class JournalDto extends Journal {
   updatedAt: Date;
 }
 
-export type JournalDocument = HydratedDocument<Journal>;
+export type JournalsDocument = HydratedDocument<Journals>;
 
-export const JournalSchema = SchemaFactory.createForClass(Journal);
+export const JournalsSchema = SchemaFactory.createForClass(Journals);

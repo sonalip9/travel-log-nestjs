@@ -77,7 +77,7 @@ module.exports = {
       {
         relativeDepth: 2,
         aliases: [
-          { alias: '@journal', matcher: 'src/journal' },
+          { alias: '@journals', matcher: 'src/journals' },
           { alias: '@', matcher: './src' },
         ],
       },
@@ -87,7 +87,7 @@ module.exports = {
     'import/resolver': {
       alias: {
         map: [
-          ['@journal', './src/journal'],
+          ['@journals', './src/journals'],
           ['@', './src'],
         ],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
