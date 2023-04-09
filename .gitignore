@@ -40,3 +40,6 @@ lerna-debug.log*
 .flaskenv*
 !.env.project
 !.env.vault
+
+# thunder client
+thunderActivity.json

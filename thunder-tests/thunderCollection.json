@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "colName": "Journals",
+    "created": "2023-04-09T14:35:51.753Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+        "name": "Pages",
+        "containerId": "",
+        "created": "2023-04-09T16:12:23.845Z",
+        "sortNum": 10000
+      }
+    ]
+  }
+]

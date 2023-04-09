@@ -1,0 +1,192 @@
+[
+  {
+    "_id": "558df140-40b4-4e3b-96f4-096b8103ac0c",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"title\": \"My first journal\",\n  \"description\": \"This is my first journal. I will use it for noting my first trip.\"\n}",
+      "type": "json"
+    },
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "",
+    "created": "2023-04-09T14:38:10.910Z",
+    "headers": [],
+    "method": "POST",
+    "modified": "2023-04-09T14:39:55.434Z",
+    "name": "Create Journal",
+    "params": [],
+    "sortNum": 10000,
+    "tests": [],
+    "url": "{{base_url}}/journal/create"
+  },
+  {
+    "_id": "b3309823-a688-4c36-8b1c-ad1f7d2253e3",
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "",
+    "created": "2023-04-09T15:59:52.579Z",
+    "headers": [],
+    "method": "GET",
+    "modified": "2023-04-09T16:00:11.336Z",
+    "name": "Get all journals",
+    "params": [],
+    "sortNum": 20000,
+    "tests": [],
+    "url": "{{base_url}}/journal/all"
+  },
+  {
+    "_id": "48dec2e0-0490-4f9f-b7b9-26e3a546e999",
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "",
+    "created": "2023-04-09T16:00:33.588Z",
+    "headers": [],
+    "method": "GET",
+    "modified": "2023-04-09T16:09:35.011Z",
+    "name": "Get a journal",
+    "params": [
+      {
+        "isPath": true,
+        "name": "id",
+        "value": "6432ce3c285bf12c80ec2c75"
+      }
+    ],
+    "sortNum": 30000,
+    "tests": [],
+    "url": "{{base_url}}/journal/{id}"
+  },
+  {
+    "_id": "f8c43d22-320d-44a3-8a00-a47453de5ab4",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"description\": \"\"\n}",
+      "type": "json"
+    },
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "",
+    "created": "2023-04-09T16:10:03.558Z",
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
+    "method": "PATCH",
+    "modified": "2023-04-09T16:10:56.122Z",
+    "name": "Update a journal",
+    "params": [
+      {
+        "isPath": true,
+        "name": "id",
+        "value": "6432ce3c285bf12c80ec2c75"
+      }
+    ],
+    "sortNum": 40000,
+    "tests": [],
+    "url": "{{base_url}}/journal/{id}/update"
+  },
+  {
+    "_id": "1592331f-bffa-4c06-bd20-0ff1588516ca",
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "",
+    "created": "2023-04-09T16:11:29.645Z",
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
+    "method": "DELETE",
+    "modified": "2023-04-09T16:11:56.014Z",
+    "name": "Delete a journal",
+    "params": [
+      {
+        "isPath": true,
+        "name": "id",
+        "value": "6432ce3c285bf12c80ec2c75"
+      }
+    ],
+    "sortNum": 50000,
+    "tests": [],
+    "url": "{{base_url}}/journal/{id}/delete"
+  },
+  {
+    "_id": "741d0a29-c175-4d5c-9a4c-6d84ec818f85",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
+      "type": "json"
+    },
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+    "created": "2023-04-09T16:12:31.250Z",
+    "headers": [],
+    "method": "POST",
+    "modified": "2023-04-09T16:13:24.476Z",
+    "name": "Create a page",
+    "params": [
+      {
+        "isPath": true,
+        "name": "id",
+        "value": "64312e9a572f0b72bce643dd"
+      }
+    ],
+    "sortNum": 60000,
+    "tests": [],
+    "url": "{{base_url}}/journal/{id}/page/create"
+  },
+  {
+    "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"title\": \"My first page\",\n  \"content\": \"I am testing the api via thunder client.\"\n}",
+      "type": "json"
+    },
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+    "created": "2023-04-09T16:15:07.122Z",
+    "headers": [],
+    "method": "PATCH",
+    "modified": "2023-04-09T16:25:07.817Z",
+    "name": "Update a page",
+    "params": [
+      {
+        "isPath": true,
+        "name": "id",
+        "value": "64312e9a572f0b72bce643dd"
+      },
+      {
+        "isPath": true,
+        "name": "pageId",
+        "value": "6432e4244b6603bbf4ad7c66"
+      }
+    ],
+    "sortNum": 80000,
+    "tests": [],
+    "url": "{{base_url}}/journal/{id}/page/{pageId}/update"
+  },
+  {
+    "_id": "b2b5f9a1-5b1f-4b1f-8f9f-1f1f2f3f4f5f",
+    "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+    "name": "Delete a page",
+    "url": "{{base_url}}/journal/{id}/page/{pageId}/delete",
+    "method": "DELETE",
+    "sortNum": 90000,
+    "created": "2023-04-09T16:25:35.000Z",
+    "modified": "2023-04-09T16:29:28.369Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "id",
+        "value": "64312e9a572f0b72bce643dd",
+        "isPath": true
+      },
+      {
+        "name": "pageId",
+        "value": "6432e4244b6603bbf4ad7c66",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  }
+]
