@@ -1,0 +1,37 @@
+name: Static Code Analysis
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  static-code-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+
+      - name: Install Node modules
+        run: yarn ci
+
+      - name: Linting
+        run: yarn lint:check --max-warnings 0
+
+      - name: Type checking
+        run: yarn tsc --noEmit
+
+      - name: Formatting
+        run: yarn format:check
+
+      - name: Unit & Integration tests
+        run: yarn test
+
+      - name: Build
+        run: yarn build
