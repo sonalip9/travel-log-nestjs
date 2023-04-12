@@ -193,14 +193,38 @@
     "_id": "eac9fb97-629e-4ece-9e22-330ad0a86f75",
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
-    "name": "Health Check",
-    "url": "{{base_url}}/journals/healthCheck",
-    "method": "GET",
-    "sortNum": 100000,
     "created": "2023-04-09T18:44:16.335Z",
-    "modified": "2023-04-09T18:44:54.113Z",
     "headers": [],
+    "method": "GET",
+    "modified": "2023-04-09T18:44:54.113Z",
+    "name": "Health Check",
     "params": [],
+    "sortNum": 100000,
+    "tests": [],
+    "url": "{{base_url}}/journals/healthCheck"
+  },
+  {
+    "_id": "8277f32f-5a69-4c09-8cee-c4903cebde77",
+    "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+    "containerId": "",
+    "name": "Sign Up",
+    "url": "{{base_url}}/auth/signup",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-04-12T16:03:51.858Z",
+    "modified": "2023-04-12T17:57:32.012Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
+      "form": []
+    },
     "tests": []
   }
 ]
