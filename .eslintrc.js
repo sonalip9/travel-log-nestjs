@@ -78,6 +78,8 @@ module.exports = {
         relativeDepth: 2,
         aliases: [
           { alias: '@journals', matcher: 'src/journals' },
+          { alias: '@auth', matcher: 'src/auth' },
+          { alias: '@users', matcher: 'src/users' },
           { alias: '@', matcher: './src' },
         ],
       },
@@ -88,6 +90,8 @@ module.exports = {
       alias: {
         map: [
           ['@journals', './src/journals'],
+          ['@auth', './src/auth'],
+          ['@users', './src/users'],
           ['@', './src'],
         ],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
