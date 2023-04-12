@@ -11,4 +11,8 @@ export class AuthService {
   async create(userDto: LoginDto): Promise<Users> {
     return await this.usersService.create(userDto);
   }
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    return this.usersService.findOne(username, pass);
+  }
 }

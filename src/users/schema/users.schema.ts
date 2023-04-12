@@ -7,7 +7,7 @@ export class Users {
   @Prop({ index: true, required: true, unique: true })
   username: string;
 
-  @Prop({ required: true, select: false })
+  @Prop({ required: true })
   password: string;
 }
 
@@ -21,7 +21,12 @@ UsersSchema.pre('save', async function (next) {
   next();
 });
 
+
+
 UsersSchema.set('toObject', {
   useProjection: true,
   versionKey: false,
+  transform: (_doc, ret) => {
+    delete ret.password;
+  },
 });
