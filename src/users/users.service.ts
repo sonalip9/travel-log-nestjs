@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bycrypt from 'bcrypt';
 import { Model } from 'mongoose';
 
 import { Users } from './schema/users.schema';
@@ -29,6 +30,29 @@ export class UsersService {
     }
 
     const user = await this.usersModel.create(loginDto);
+    return user.toObject();
+  }
+
+  /**
+   * Finds a user by its username.
+   * @param username The email address used as user's username.
+   * @param pass The user's password.
+   * @returns The user's data.
+   * @throws HttpException if the user doesn't exist.
+   * @throws HttpException if the user's data is invalid.
+   * @throws HttpException if the user's password is invalid.
+   */
+  async findOne(username: string, pass: string): Promise<Users> {
+    const user = await this.usersModel.findOne({ username });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const comparePassword = await bycrypt.compare(pass, user.password);
+    if (!comparePassword) {
+      throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
+    }
+
     return user.toObject();
   }
 }
