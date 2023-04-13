@@ -79,6 +79,7 @@ module.exports = {
         aliases: [
           { alias: '@journals', matcher: 'src/journals' },
           { alias: '@auth', matcher: 'src/auth' },
+          { alias: '@common', matcher: 'src/common' },
           { alias: '@users', matcher: 'src/users' },
           { alias: '@', matcher: './src' },
         ],
@@ -91,6 +92,7 @@ module.exports = {
         map: [
           ['@journals', './src/journals'],
           ['@auth', './src/auth'],
+          ['@common', './src/common'],
           ['@users', './src/users'],
           ['@', './src'],
         ],
