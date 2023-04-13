@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@auth": ["src/auth/index"],
+      "@common/*": ["src/common/*"],
       "@journals": ["src/journals/index"],
       "@users": ["src/users/index"],
       "@/*": ["src/*"]

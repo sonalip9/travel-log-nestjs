@@ -3,9 +3,10 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-
-import { Users } from '@users';
 import { LocalAuthGuard } from './guard/local.guard';
+
+import { AuthenticatedReq } from '@common/interface/auth-req.interface';
+import { Users } from '@users';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -32,20 +33,16 @@ export class AuthController {
 
   /**
    * Logs in a user.
-   * @param password The user's password.
-   * @param username The email address used as user's username.
+   * @param req The request object containing the user's data.
    * @returns The user's data.
    * @throws HttpException if the user doesn't exist.
    * @throws HttpException if the user's data is invalid.
    */
   @Post('/login')
   @ApiOperation({ summary: 'Logs in a user.' })
-  @ApiBody({
-    description: "The user's data.",
-    type: LoginDto,
-  })
+  @ApiBody({ description: "The user's data.", type: LoginDto })
   @UseGuards(LocalAuthGuard)
-  async login(@Request() req: any): Promise<Users> {
-    return req.user;
+  async login(@Request() req: AuthenticatedReq): Promise<any> {
+    return this.authService.login(req.user);
   }
 }
