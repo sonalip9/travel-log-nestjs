@@ -13,6 +13,8 @@ export class Users {
 
 export type UsersDocument = HydratedDocument<Users>;
 
+export type SecureUsersDocument = Omit<UsersDocument, 'password'>;
+
 export const UsersSchema = SchemaFactory.createForClass(Users);
 
 UsersSchema.pre('save', async function (next) {
@@ -21,12 +23,10 @@ UsersSchema.pre('save', async function (next) {
   next();
 });
 
-
-
 UsersSchema.set('toObject', {
-  useProjection: true,
-  versionKey: false,
   transform: (_doc, ret) => {
     delete ret.password;
   },
+  useProjection: true,
+  versionKey: false,
 });
