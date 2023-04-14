@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
-import { UsersDocument } from '@users';
+import { SecureUsersDocument } from '@users';
 
 export interface AuthenticatedReq extends Request {
-  user: Omit<UsersDocument, 'password'>;
+  user: SecureUsersDocument;
 }
