@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from './guard/local.guard';
 
+import { Public } from '@common/decorator/public.decorator';
 import { AuthenticatedReq } from '@common/interface/auth-req.interface';
 import { Users } from '@users';
 
@@ -42,6 +43,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Logs in a user.' })
   @ApiBody({ description: "The user's data.", type: LoginDto })
   @UseGuards(LocalAuthGuard)
+  @Public()
   async login(@Request() req: AuthenticatedReq): Promise<any> {
     return this.authService.login(req.user);
   }
