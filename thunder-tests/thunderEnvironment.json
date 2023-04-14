@@ -10,6 +10,10 @@
       {
         "name": "base_url",
         "value": "http://localhost:3000"
+      },
+      {
+        "name": "auth",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDM2ZjJjZGU4ZTBhM2RlNmM2ZWY2ODAiLCJ1c2VybmFtZSI6InNvbmFsaS5wYXJla2g5MTJAZ21haWwuY29tIiwiaWF0IjoxNjgxNDkwMTQwLCJleHAiOjE2ODE0OTM3NDB9.08am4tUoNZ-rmzTc2lx0FoS04R23Lap-ioJpHy3pzfA"
       }
     ]
   }

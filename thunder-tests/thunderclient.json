@@ -62,13 +62,7 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:10:03.558Z",
-    "headers": [
-      {
-        "isDisabled": true,
-        "name": "User-Agent",
-        "value": "Thunder Client (https://www.thunderclient.com)"
-      }
-    ],
+    "headers": [],
     "method": "PATCH",
     "modified": "2023-04-09T16:10:56.122Z",
     "name": "Update a journal",
@@ -88,13 +82,7 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:11:29.645Z",
-    "headers": [
-      {
-        "isDisabled": true,
-        "name": "User-Agent",
-        "value": "Thunder Client (https://www.thunderclient.com)"
-      }
-    ],
+    "headers": [],
     "method": "DELETE",
     "modified": "2023-04-09T16:11:56.014Z",
     "name": "Delete a journal",
@@ -212,7 +200,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-04-11T16:55:59.934Z",
-    "modified": "2023-04-12T18:18:41.096Z",
+    "modified": "2023-04-14T16:40:41.910Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -225,30 +213,37 @@
       "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "set-env-var",
+        "custom": "json.accessToken",
+        "action": "setto",
+        "value": "{{auth}}"
+      }
+    ]
   },
   {
     "_id": "8277f32f-5a69-4c09-8cee-c4903cebde77",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
+      "type": "json"
+    },
     "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
     "containerId": "",
-    "name": "Sign Up",
-    "url": "{{base_url}}/auth/signup",
-    "method": "POST",
-    "sortNum": 20000,
     "created": "2023-04-12T16:03:51.858Z",
-    "modified": "2023-04-12T18:18:50.526Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "method": "POST",
+    "modified": "2023-04-12T18:18:50.526Z",
+    "name": "Sign Up",
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
-      "form": []
-    },
-    "tests": []
+    "sortNum": 20000,
+    "tests": [],
+    "url": "{{base_url}}/auth/signup"
   }
 ]
