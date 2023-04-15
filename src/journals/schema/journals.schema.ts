@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument, Types } from 'mongoose';
 
-import { Pages, PagesSchema } from './pages.schema';
+import { PagesDocument, PagesSchema } from './pages.schema';
 
 /**
  * The journal schema.
@@ -41,7 +41,7 @@ export class Journals {
    * @requires PagesSchema
    */
   @Prop({ default: [], required: false, type: [PagesSchema] })
-  pages?: Pages[];
+  pages?: Types.Array<PagesDocument>;
 
   /**
    * The id of the user that owns the journal.
