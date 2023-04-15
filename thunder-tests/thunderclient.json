@@ -15,7 +15,7 @@
     "created": "2023-04-09T14:38:10.910Z",
     "headers": [],
     "method": "POST",
-    "modified": "2023-04-15T07:01:23.781Z",
+    "modified": "2023-04-15T15:15:33.609Z",
     "name": "Create Journal",
     "params": [],
     "sortNum": 10000,
@@ -28,7 +28,7 @@
       },
       {
         "action": "setto",
-        "custom": "json._id",
+        "custom": "json.journalId",
         "type": "set-env-var",
         "value": "{{journalId}}"
       }
@@ -44,9 +44,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T15:59:52.579Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "GET",
-    "modified": "2023-04-15T08:54:20.480Z",
+    "modified": "2023-04-15T15:15:43.039Z",
     "name": "Get all journals",
     "params": [],
     "sortNum": 20000,
@@ -62,9 +68,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:00:33.588Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "GET",
-    "modified": "2023-04-15T07:07:22.681Z",
+    "modified": "2023-04-15T15:15:48.870Z",
     "name": "Get a journal",
     "params": [
       {
@@ -85,15 +97,21 @@
     },
     "body": {
       "form": [],
-      "raw": "{\n  \"description\": \"Updated description\"\n}",
+      "raw": "{\n  \"description\": \"This is my first journal.\"\n}",
       "type": "json"
     },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:10:03.558Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "PATCH",
-    "modified": "2023-04-15T08:54:12.747Z",
+    "modified": "2023-04-15T15:15:55.541Z",
     "name": "Update a journal",
     "params": [
       {
@@ -115,9 +133,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:11:29.645Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "DELETE",
-    "modified": "2023-04-15T08:54:05.662Z",
+    "modified": "2023-04-15T15:16:00.847Z",
     "name": "Delete a journal",
     "params": [
       {
@@ -144,9 +168,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
     "created": "2023-04-09T16:12:31.250Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "POST",
-    "modified": "2023-04-15T07:41:41.721Z",
+    "modified": "2023-04-15T15:15:07.015Z",
     "name": "Create a page",
     "params": [
       {
@@ -159,7 +189,7 @@
     "tests": [
       {
         "action": "setto",
-        "custom": "json.pages[-1]._id",
+        "custom": "json.pages[-1].pageId",
         "type": "set-env-var",
         "value": "{{pageId}}"
       }
@@ -180,9 +210,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
     "created": "2023-04-09T16:15:07.122Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "PATCH",
-    "modified": "2023-04-15T08:46:53.105Z",
+    "modified": "2023-04-15T15:15:17.776Z",
     "name": "Update a page",
     "params": [
       {
@@ -209,9 +245,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
     "created": "2023-04-09T16:25:35.000Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "DELETE",
-    "modified": "2023-04-15T08:49:01.312Z",
+    "modified": "2023-04-15T15:15:24.755Z",
     "name": "Delete a page",
     "params": [
       {
@@ -234,9 +276,15 @@
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T18:44:16.335Z",
-    "headers": [],
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
     "method": "GET",
-    "modified": "2023-04-09T18:44:54.113Z",
+    "modified": "2023-04-15T15:16:07.977Z",
     "name": "Health Check",
     "params": [],
     "sortNum": 100000,
@@ -257,10 +305,15 @@
       {
         "name": "Content-Type",
         "value": "application/json"
+      },
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
       }
     ],
     "method": "POST",
-    "modified": "2023-04-15T06:53:08.830Z",
+    "modified": "2023-04-15T15:16:18.977Z",
     "name": "Login",
     "params": [],
     "sortNum": 10000,
@@ -297,7 +350,7 @@
       }
     ],
     "method": "POST",
-    "modified": "2023-04-12T18:18:50.526Z",
+    "modified": "2023-04-15T15:16:25.362Z",
     "name": "Sign Up",
     "params": [],
     "sortNum": 20000,

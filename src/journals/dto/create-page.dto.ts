@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsNotEmpty,
@@ -7,32 +6,26 @@ import {
 } from 'class-validator';
 
 export class CreatePageDto {
-  @ApiProperty({
-    description: 'The title of the page.',
-    example: 'My first page',
-    required: true,
-    type: String,
-  })
+  /**
+   * The title of the page.
+   * @example 'My first page'
+   */
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({
-    description: 'The content of the page.',
-    example: 'This is my first page.',
-    required: false,
-    type: String,
-  })
+  /**
+   * The content of the page. This is optional.
+   * @example 'This is my first page.'
+   */
   @IsString()
   @IsOptional()
   content?: string;
 
-  @ApiProperty({
-    description: 'The date of the page. Format: YYYY-MM-DD',
-    example: '2021-01-01',
-    required: true,
-    type: String,
-  })
+  /**
+   * The date of the page.
+   * @example '2021-07-15T00:00:00.000Z'
+   */
   @IsDateString()
   @IsNotEmpty()
   date: Date;

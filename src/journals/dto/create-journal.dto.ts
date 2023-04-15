@@ -1,23 +1,18 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateJournalDto {
-  @ApiProperty({
-    description: 'The title of the journal.',
-    example: 'My first journal',
-    required: true,
-    type: String,
-  })
+  /**
+   * The title of the journal.
+   * @example 'My first journal'
+   */
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({
-    description: 'The description of the journal.',
-    example: 'This is my first journal.',
-    required: false,
-    type: String,
-  })
+  /**
+   * The description of the journal. This is optional.
+   * @example 'This is my first journal.'
+   */
   @IsString()
   @IsOptional()
   description?: string;

@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -10,24 +10,19 @@ import { AuthenticatedReq } from '@common/interface/auth-req.interface';
 import { Users } from '@users';
 
 @Controller('auth')
-@ApiTags('auth')
+@ApiTags('Authentication')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   /**
    * Creates a new user.
-   * @param password The user's password.
-   * @param username The email address used as user's username.
+   * @param loginDto The user's credentials for creating an account.
    * @returns The user's data.
    * @throws HttpException if the user already exists.
    * @throws HttpException if the user's data is invalid.
    */
   @Post('/signup')
-  @ApiOperation({ summary: 'Creates a new user.' })
-  @ApiBody({
-    description: "The user's data.",
-    type: LoginDto,
-  })
+  @Public()
   async createUser(@Body() loginDto: LoginDto): Promise<Users> {
     return await this.authService.create(loginDto);
   }
@@ -40,7 +35,6 @@ export class AuthController {
    * @throws HttpException if the user's data is invalid.
    */
   @Post('/login')
-  @ApiOperation({ summary: 'Logs in a user.' })
   @ApiBody({ description: "The user's data.", type: LoginDto })
   @UseGuards(LocalAuthGuard)
   @Public()

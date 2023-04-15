@@ -7,23 +7,23 @@ import {
   Patch,
   Post,
   Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiCreatedResponse,
   ApiExcludeEndpoint,
   ApiOkResponse,
-  ApiOperation,
   ApiParam,
   ApiTags,
-  PartialType,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { CreateJournalDto } from './dto/create-journal.dto';
 import { CreatePageDto } from './dto/create-page.dto';
+import { JournalsDto } from './dto/journals.dto';
+import { UserJournalsDto } from './dto/user-journals.dto';
 import { JournalsService } from './journals.service';
-import { JournalsDocument, JournalsDto } from './schema/journals.schema';
 
 import { Public } from '@common/decorator/public.decorator';
 import { AuthenticatedReq } from '@common/interface/auth-req.interface';
@@ -31,6 +31,10 @@ import { AuthenticatedReq } from '@common/interface/auth-req.interface';
 @Controller('/journals')
 @ApiTags('Journal')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Unauthorized',
+  type: UnauthorizedException,
+})
 export class JournalsController {
   constructor(private readonly journalService: JournalsService) {}
 
@@ -44,16 +48,9 @@ export class JournalsController {
   /**
    * Creates a new journal.
    * @param createJournalDto The data to create a journal.
-   * @param createJournalDto.title The title of the journal.
-   * @param createJournalDto.description (optional) The description of the journal.
    * @returns The created journal.
    */
   @Post()
-  @ApiOperation({ summary: 'Creates a new journal.' })
-  @ApiBody({
-    description: 'The data to create a journal.',
-    type: CreateJournalDto,
-  })
   @ApiCreatedResponse({
     description: 'The created journal.',
     type: JournalsDto,
@@ -61,7 +58,7 @@ export class JournalsController {
   async createJournal(
     @Req() req: AuthenticatedReq,
     @Body() createJournalDto: CreateJournalDto,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.createJournal({
       ...createJournalDto,
       userId: req.user._id,
@@ -73,11 +70,11 @@ export class JournalsController {
    * @returns List of all journals.
    */
   @Get('/all')
-  @ApiOperation({ summary: 'Fetches all journals from the database.' })
-  @ApiOkResponse({ description: 'List of all journals.', type: [JournalsDto] })
-  async getAllJournals(
-    @Req() req: AuthenticatedReq,
-  ): Promise<{ userJournals: JournalsDocument[] }> {
+  @ApiOkResponse({
+    description: 'List of all journals.',
+    type: UserJournalsDto,
+  })
+  async getAllJournals(@Req() req: AuthenticatedReq): Promise<UserJournalsDto> {
     const journals = await this.journalService.getAllJournals(req.user);
     return { userJournals: journals };
   }
@@ -88,7 +85,6 @@ export class JournalsController {
    * @returns The journal with the given id.
    */
   @Get('/:id')
-  @ApiOperation({ summary: 'Fetches a journal with the given id.' })
   @ApiParam({ description: 'The id of the journal to fetch.', name: 'id' })
   @ApiOkResponse({
     description: 'The journal with the given id.',
@@ -97,7 +93,7 @@ export class JournalsController {
   async getJournal(
     @Param('id') id: string,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.getJournal(id, req.user);
   }
 
@@ -110,12 +106,7 @@ export class JournalsController {
    * @returns
    */
   @Patch('/:id')
-  @ApiOperation({ summary: 'Updates a journal with the given id.' })
   @ApiParam({ description: 'The id of the journal to update.', name: 'id' })
-  @ApiBody({
-    description: 'The data to update the journal with.',
-    type: PartialType<CreateJournalDto>,
-  })
   @ApiOkResponse({
     description: 'The updated journal.',
     type: JournalsDto,
@@ -124,7 +115,7 @@ export class JournalsController {
     @Param('id') id: string,
     @Body() createJournalDto: Partial<CreateJournalDto>,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.updateJournal(id, createJournalDto, req.user);
   }
 
@@ -133,17 +124,13 @@ export class JournalsController {
    * @param id The id of the journal to delete.
    * @returns The deleted journal.
    */
-  @ApiOperation({ summary: 'Deletes a journal with the given id.' })
   @ApiParam({ description: 'The id of the journal to delete.', name: 'id' })
-  @ApiOkResponse({
-    description: 'The deleted journal.',
-    type: JournalsDto,
-  })
+  @ApiOkResponse({ description: 'The deleted journal.', type: JournalsDto })
   @Delete('/:id')
   async deleteJournal(
     @Param('id') id: string,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.deleteJournal(id, req.user);
   }
 
@@ -157,14 +144,9 @@ export class JournalsController {
    * @returns The updated journal.
    */
   @Post('/:id/pages')
-  @ApiOperation({ summary: 'Creates a new page in a journal.' })
   @ApiParam({
     description: 'The id of the journal to add a page to.',
     name: 'id',
-  })
-  @ApiBody({
-    description: 'The data to create a page.',
-    type: CreatePageDto,
   })
   @ApiCreatedResponse({
     description: 'The updated journal.',
@@ -174,7 +156,7 @@ export class JournalsController {
     @Param('id') id: string,
     @Body() createPageDto: CreatePageDto,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.addPage(id, createPageDto, req.user);
   }
 
@@ -189,7 +171,6 @@ export class JournalsController {
    * @returns The updated journal.
    */
   @Patch('/:id/pages/:pageId')
-  @ApiOperation({ summary: 'Updates a page in a journal.' })
   @ApiParam({
     description: 'The id of the journal to update a page in.',
     name: 'id',
@@ -197,10 +178,6 @@ export class JournalsController {
   @ApiParam({
     description: 'The id of the page to update.',
     name: 'pageId',
-  })
-  @ApiBody({
-    description: 'The data to update the page with.',
-    type: PartialType(CreatePageDto),
   })
   @ApiOkResponse({
     description: 'The updated journal.',
@@ -211,7 +188,7 @@ export class JournalsController {
     @Param('pageId') pageId: string,
     @Body() createPageDto: Partial<CreatePageDto>,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.updatePage(id, pageId, createPageDto, req.user);
   }
 
@@ -222,7 +199,6 @@ export class JournalsController {
    * @returns The updated journal with the deleted page.
    */
   @Delete('/:id/pages/:pageId')
-  @ApiOperation({ summary: 'Deletes a page from a journal.' })
   @ApiParam({
     description: 'The id of the journal to delete a page from.',
     name: 'id',
@@ -239,7 +215,7 @@ export class JournalsController {
     @Param('id') id: string,
     @Param('pageId') pageId: string,
     @Req() req: AuthenticatedReq,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     return this.journalService.deletePage(id, pageId, req.user);
   }
 }
