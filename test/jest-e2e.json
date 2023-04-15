@@ -1,7 +1,10 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
   "moduleNameMapper": {
-    "^@journals": "<rootDir>/src/journals/index"
+    "^@auth": "<rootDir>/src/auth/index",
+    "^@common/(.*)$": "<rootDir>/src/common/$1",
+    "^@journals": "<rootDir>/src/journals/index",
+    "^@users": "<rootDir>/src/users/index"
   },
   "rootDir": "../",
   "testEnvironment": "node",
