@@ -19,6 +19,17 @@ export class AuthGuard implements CanActivate {
     private usersService: UsersService,
   ) {}
 
+  /**
+   * A method that determines whether the request is authorized.
+   *
+   * It is called by the Nest runtime before the route handler is invoked.
+   * First, it checks if the route is public. If it is, it returns true.
+   * Otherwise, it extracts the token from the request header and verifies it.
+   * If the token is valid, it adds the user to the request object and returns true.
+   * Otherwise, it throws an UnauthorizedException.
+   * @param context The context of the request.
+   * @returns A boolean indicating whether the request is authorized.
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),

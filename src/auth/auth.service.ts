@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { LoginDto } from './dto/login.dto';
-import { LoginResponse } from './interface/login-res.interface';
 
 import { SecureUsersDocument, Users, UsersService } from '@users';
 
@@ -13,15 +12,37 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /**
+   * Creates a new user. Then, it logs in the user.
+   * @param userDto The user's credentials for creating an account.
+   * @returns The user's data with the access token.
+   * @throws HttpException if the user already exists.
+   * @throws HttpException if the user's data is invalid.
+   */
   async create(userDto: LoginDto): Promise<Users> {
-    return await this.usersService.create(userDto);
+    const user = await this.usersService.create(userDto);
+    return this.login(user);
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    return this.usersService.findOne(username, pass);
+  /**
+   * Validates a user. Then, it logs in the user.
+   * @param loginDto The user's credentials for logging in.
+   * @returns The user's data with the access token.
+   * @throws HttpException if the user doesn't exist.
+   * @throws HttpException if the user's data is invalid.
+   * @throws HttpException if the user's password is incorrect.
+   */
+  async validateUser({ username, password: pass }: LoginDto): Promise<any> {
+    const user = await this.usersService.findOne(username, pass);
+    return this.login(user);
   }
 
-  async login(user: SecureUsersDocument): Promise<LoginResponse> {
+  /**
+   * Logs in a user.
+   * @param user The user's data.
+   * @returns The user's data with the access token.
+   */
+  async login(user: SecureUsersDocument): Promise<any> {
     const payload = { userId: user._id, username: user.username };
     return {
       accessToken: await this.jwtService.signAsync(payload, {

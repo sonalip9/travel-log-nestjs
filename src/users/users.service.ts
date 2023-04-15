@@ -1,9 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bycrypt from 'bcrypt';
 import { Model } from 'mongoose';
 
-import { Users } from './schema/users.schema';
+import { SecureUsersDocument, Users } from './schema/users.schema';
 
 import { LoginDto } from '@/auth/dto/login.dto';
 
@@ -20,13 +25,13 @@ export class UsersService {
    * @throws HttpException if the user already exists.
    * @throws HttpException if the user's data is invalid.
    */
-  async create(loginDto: LoginDto): Promise<Users> {
+  async create(loginDto: LoginDto): Promise<SecureUsersDocument> {
     // Check if the user exists in the db
     const userInDb = await this.usersModel.findOne({
       username: loginDto.username,
     });
     if (userInDb) {
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new ConflictException('User already exists');
     }
 
     const user = await this.usersModel.create(loginDto);
@@ -46,15 +51,15 @@ export class UsersService {
    * @throws HttpException if the user's data is invalid.
    * @throws HttpException if the user's password is invalid.
    */
-  async findOne(username: string, pass: string): Promise<Users> {
+  async findOne(username: string, pass: string): Promise<SecureUsersDocument> {
     const user = await this.usersModel.findOne({ username });
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Invalid credentials');
     }
 
     const comparePassword = await bycrypt.compare(pass, user.password);
     if (!comparePassword) {
-      throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     return user.toObject();
