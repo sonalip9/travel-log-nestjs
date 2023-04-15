@@ -5,12 +5,15 @@ import { JournalsController } from './journals.controller';
 import { JournalsService } from './journals.service';
 import { Journals, JournalsSchema } from './schema/journals.schema';
 
+import { UsersModule } from '@users';
+
 @Module({
   controllers: [JournalsController],
   imports: [
     MongooseModule.forFeature([
       { name: Journals.name, schema: JournalsSchema },
     ]),
+    UsersModule,
   ],
   providers: [JournalsService],
 })

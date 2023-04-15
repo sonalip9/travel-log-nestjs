@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiExcludeEndpoint,
@@ -23,13 +25,18 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { JournalsService } from './journals.service';
 import { JournalsDocument, JournalsDto } from './schema/journals.schema';
 
+import { Public } from '@common/decorator/public.decorator';
+import { AuthenticatedReq } from '@common/interface/auth-req.interface';
+
 @Controller('/journals')
 @ApiTags('Journal')
+@ApiBearerAuth()
 export class JournalsController {
   constructor(private readonly journalService: JournalsService) {}
 
   @Get('/healthCheck')
   @ApiExcludeEndpoint()
+  @Public()
   healthCheck(): string {
     return 'Journals service is up and running!';
   }
@@ -52,9 +59,13 @@ export class JournalsController {
     type: JournalsDto,
   })
   async createJournal(
+    @Req() req: AuthenticatedReq,
     @Body() createJournalDto: CreateJournalDto,
   ): Promise<JournalsDocument> {
-    return this.journalService.createJournal(createJournalDto);
+    return this.journalService.createJournal({
+      ...createJournalDto,
+      userId: req.user._id,
+    });
   }
 
   /**
@@ -64,8 +75,11 @@ export class JournalsController {
   @Get('/all')
   @ApiOperation({ summary: 'Fetches all journals from the database.' })
   @ApiOkResponse({ description: 'List of all journals.', type: [JournalsDto] })
-  async getAllJournals(): Promise<JournalsDocument[]> {
-    return this.journalService.getAllJournals();
+  async getAllJournals(
+    @Req() req: AuthenticatedReq,
+  ): Promise<{ userJournals: JournalsDocument[] }> {
+    const journals = await this.journalService.getAllJournals(req.user);
+    return { userJournals: journals };
   }
 
   /**
@@ -80,8 +94,11 @@ export class JournalsController {
     description: 'The journal with the given id.',
     type: JournalsDto,
   })
-  async getJournal(@Param('id') id: string): Promise<JournalsDocument> {
-    return this.journalService.getJournal(id);
+  async getJournal(
+    @Param('id') id: string,
+    @Req() req: AuthenticatedReq,
+  ): Promise<JournalsDocument> {
+    return this.journalService.getJournal(id, req.user);
   }
 
   /**
@@ -106,8 +123,9 @@ export class JournalsController {
   async updateJournal(
     @Param('id') id: string,
     @Body() createJournalDto: Partial<CreateJournalDto>,
+    @Req() req: AuthenticatedReq,
   ): Promise<JournalsDocument> {
-    return this.journalService.updateJournal(id, createJournalDto);
+    return this.journalService.updateJournal(id, createJournalDto, req.user);
   }
 
   /**
@@ -122,8 +140,11 @@ export class JournalsController {
     type: JournalsDto,
   })
   @Delete('/:id')
-  async deleteJournal(@Param('id') id: string): Promise<JournalsDocument> {
-    return this.journalService.deleteJournal(id);
+  async deleteJournal(
+    @Param('id') id: string,
+    @Req() req: AuthenticatedReq,
+  ): Promise<JournalsDocument> {
+    return this.journalService.deleteJournal(id, req.user);
   }
 
   /**
@@ -152,8 +173,9 @@ export class JournalsController {
   async createPage(
     @Param('id') id: string,
     @Body() createPageDto: CreatePageDto,
+    @Req() req: AuthenticatedReq,
   ): Promise<JournalsDocument> {
-    return this.journalService.addPage(id, createPageDto);
+    return this.journalService.addPage(id, createPageDto, req.user);
   }
 
   /**
@@ -188,8 +210,9 @@ export class JournalsController {
     @Param('id') id: string,
     @Param('pageId') pageId: string,
     @Body() createPageDto: Partial<CreatePageDto>,
+    @Req() req: AuthenticatedReq,
   ): Promise<JournalsDocument> {
-    return this.journalService.updatePage(id, pageId, createPageDto);
+    return this.journalService.updatePage(id, pageId, createPageDto, req.user);
   }
 
   /**
@@ -215,7 +238,8 @@ export class JournalsController {
   async deletePage(
     @Param('id') id: string,
     @Param('pageId') pageId: string,
+    @Req() req: AuthenticatedReq,
   ): Promise<JournalsDocument> {
-    return this.journalService.deletePage(id, pageId);
+    return this.journalService.deletePage(id, pageId, req.user);
   }
 }

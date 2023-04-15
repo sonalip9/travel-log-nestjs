@@ -13,7 +13,19 @@
       },
       {
         "name": "auth",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDM2ZjJjZGU4ZTBhM2RlNmM2ZWY2ODAiLCJ1c2VybmFtZSI6InNvbmFsaS5wYXJla2g5MTJAZ21haWwuY29tIiwiaWF0IjoxNjgxNDkwMTQwLCJleHAiOjE2ODE0OTM3NDB9.08am4tUoNZ-rmzTc2lx0FoS04R23Lap-ioJpHy3pzfA"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDM2ZjJjZGU4ZTBhM2RlNmM2ZWY2ODAiLCJ1c2VybmFtZSI6InNvbmFsaS5wYXJla2g5MTJAZ21haWwuY29tIiwiaWF0IjoxNjgxNTQ4NDgzLCJleHAiOjE2ODE1NTIwODN9.EwXXg-kJZz4sed8AqZXBN3OUVKmLdYWAHPsbQSLuBqg"
+      },
+      {
+        "name": "userId",
+        "value": "6436f2cde8e0a3de6c6ef680"
+      },
+      {
+        "name": "journalId",
+        "value": "643a4bdc09dfbe3acbb6c857"
+      },
+      {
+        "name": "pageId",
+        "value": "643a553595d5b7353374c006"
       }
     ]
   }

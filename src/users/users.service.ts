@@ -33,6 +33,10 @@ export class UsersService {
     return user.toObject();
   }
 
+  async findByUsername(username: string): Promise<Users> {
+    return (await this.usersModel.findOne({ username }).exec()).toObject();
+  }
+
   /**
    * Finds a user by its username.
    * @param username The email address used as user's username.
