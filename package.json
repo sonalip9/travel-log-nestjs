@@ -88,7 +88,13 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@auth": "<rootDir>/auth/index",
+      "^@common/(.*)$": "<rootDir>/common/$1",
+      "^@journals": "<rootDir>/journals/index",
+      "^@users": "<rootDir>/users/index"
+    }
   },
   "commitlint": {
     "extends": [
