@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -29,7 +28,8 @@ import { InternalServerErrorResponse } from '@common/decorator/error/internal-se
 import { NotFoundResponse } from '@common/decorator/error/not-found.decorator';
 import { UnauthorizedResponse } from '@common/decorator/error/unauthorized.decorator';
 import { Public } from '@common/decorator/public.decorator';
-import { AuthenticatedReq } from '@common/interface/auth-req.interface';
+import { ReqUser } from '@common/decorator/req-user.decorator';
+import { SecureUsersDocument } from '@users';
 
 @Controller('/journals')
 @ApiTags('Journal')
@@ -70,12 +70,12 @@ export class JournalsController {
     },
   })
   async createJournal(
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
     @Body() createJournalDto: CreateJournalDto,
   ): Promise<JournalsDto> {
     return this.journalService.createJournal({
       ...createJournalDto,
-      userId: req.user._id,
+      userId: user._id,
     });
   }
 
@@ -90,8 +90,10 @@ export class JournalsController {
     description: 'List of all journals.',
     type: UserJournalsDto,
   })
-  async getAllJournals(@Req() req: AuthenticatedReq): Promise<UserJournalsDto> {
-    const journals = await this.journalService.getAllJournals(req.user);
+  async getAllJournals(
+    @ReqUser() user: SecureUsersDocument,
+  ): Promise<UserJournalsDto> {
+    const journals = await this.journalService.getAllJournals(user);
     return { userJournals: journals };
   }
 
@@ -117,9 +119,9 @@ export class JournalsController {
   @ForbiddenResponse('When the user is not the owner of the journal.')
   async getJournal(
     @Param('id') id: string,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    const journal = await this.journalService.getJournal(id, req.user);
+    const journal = await this.journalService.getJournal(id, user);
     return journal.toObject();
   }
 
@@ -160,9 +162,9 @@ export class JournalsController {
   async updateJournal(
     @Param('id') id: string,
     @Body() createJournalDto: Partial<CreateJournalDto>,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    return this.journalService.updateJournal(id, createJournalDto, req.user);
+    return this.journalService.updateJournal(id, createJournalDto, user);
   }
 
   /**
@@ -184,9 +186,9 @@ export class JournalsController {
   @Delete('/:id')
   async deleteJournal(
     @Param('id') id: string,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    return this.journalService.deleteJournal(id, req.user);
+    return this.journalService.deleteJournal(id, user);
   }
 
   /**
@@ -230,9 +232,9 @@ export class JournalsController {
   async createPage(
     @Param('id') id: string,
     @Body() createPageDto: CreatePageDto,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    return this.journalService.addPage(id, createPageDto, req.user);
+    return this.journalService.addPage(id, createPageDto, user);
   }
 
   /**
@@ -282,9 +284,9 @@ export class JournalsController {
     @Param('id') id: string,
     @Param('pageId') pageId: string,
     @Body() createPageDto: Partial<CreatePageDto>,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    return this.journalService.updatePage(id, pageId, createPageDto, req.user);
+    return this.journalService.updatePage(id, pageId, createPageDto, user);
   }
 
   /**
@@ -319,8 +321,8 @@ export class JournalsController {
   async deletePage(
     @Param('id') id: string,
     @Param('pageId') pageId: string,
-    @Req() req: AuthenticatedReq,
+    @ReqUser() user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    return this.journalService.deletePage(id, pageId, req.user);
+    return this.journalService.deletePage(id, pageId, user);
   }
 }
