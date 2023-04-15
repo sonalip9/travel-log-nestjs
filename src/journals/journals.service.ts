@@ -1,14 +1,14 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { JournalsDto } from './dto/journals.dto';
-import { Journals } from './schema/journals.schema';
-import { Pages } from './schema/pages.schema';
+import { Journals, JournalsDocument } from './schema/journals.schema';
+import { Pages, PagesDocument } from './schema/pages.schema';
 
 import { SecureUsersDocument } from '@users';
 
@@ -23,6 +23,8 @@ export class JournalsService {
    * @param journalData The data to create a journal.
    * @param journalData.title The title of the journal.
    * @param journalData.description (optional) The description of the journal.
+   * @param journalData.userId The id of the user who created the journal.
+   * @param journalData.pages (optional) The pages of the journal.
    * @returns The created journal.
    */
   async createJournal(journalData: Journals): Promise<JournalsDto> {
@@ -32,6 +34,7 @@ export class JournalsService {
 
   /**
    * Fetches all journals from the database.
+   * @param user The user who is fetching the journals.
    * @returns List of all journals.
    */
   async getAllJournals(user: SecureUsersDocument): Promise<JournalsDto[]> {
@@ -42,17 +45,25 @@ export class JournalsService {
   /**
    * Fetches a journal with the given id.
    * @param id The id of the journal to fetch.
-   * @returns THe journal with the given id.
+   * @param user The user who is fetching the journal.
+   * @returns The journal with the given id.
+   * @throws {NotFoundException} When the journal with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async getJournal(
     id: string,
     user: SecureUsersDocument,
-  ): Promise<JournalsDto> {
+  ): Promise<JournalsDocument> {
     const journal = await this.journalsModel.findById(id);
-    if (journal.userId.toString() !== user._id.toString()) {
-      throw new UnauthorizedException();
+    if (!journal) {
+      throw new NotFoundException('Journal not found');
     }
-    return journal.toObject();
+
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new ForbiddenException();
+    }
+
+    return journal;
   }
 
   /**
@@ -66,22 +77,18 @@ export class JournalsService {
    * @param updateJournalData The data to update the journal with.
    * @param updateJournalData.title (optional) The title of the journal.
    * @param updateJournalData.description (optional) The description of the journal.
+   * @param updateJournalData.pages (optional) The pages of the journal.
+   * @param user The user who is updating the journal.
    * @returns The updated journal.
+   * @throws {NotFoundException} When the journal with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async updateJournal(
     id: string,
     updateJournalData: Partial<Journals>,
-    users: SecureUsersDocument,
+    user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    const journal = await this.journalsModel.findOne({ _id: id });
-
-    if (!journal) {
-      throw new NotFoundException();
-    }
-
-    if (journal.userId.toString() !== users._id.toString()) {
-      throw new UnauthorizedException();
-    }
+    const journal = await this.getJournal(id, user);
 
     journal.set(updateJournalData);
     return (await journal.save()).toObject();
@@ -90,16 +97,16 @@ export class JournalsService {
   /**
    * Deletes a journal with the given id.
    * @param id The id of the journal to delete.
+   * @param user The user who is deleting the journal.
    * @returns The deleted journal.
+   * @throws {NotFoundException} When the journal with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async deleteJournal(
     id: string,
     user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    const journal = await this.journalsModel.findById(id);
-    if (journal.userId.toString() !== user._id.toString()) {
-      throw new UnauthorizedException();
-    }
+    const journal = await this.getJournal(id, user);
 
     return journal.deleteOne();
   }
@@ -111,23 +118,34 @@ export class JournalsService {
    * @param page.title The title of the page.
    * @param page.content (optional) The content of the page.
    * @param page.date The date of the page.
+   * @param user The user who is adding a page to the journal.
    * @returns The updated journal.
+   * @throws {NotFoundException} When the journal with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async addPage(
     id: string,
     page: Pages,
     user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    const journal = await this.journalsModel.findById(id);
-
-    if (journal.userId.toString() !== user._id.toString()) {
-      throw new UnauthorizedException();
-    }
+    const journal = await this.getJournal(id, user);
 
     journal.pages.push(page);
     await journal.save();
 
     return journal.toObject();
+  }
+
+  async getPage(
+    journal: JournalsDocument,
+    pageId: string,
+  ): Promise<PagesDocument> {
+    const page = journal.pages.find((pg) => pg._id.toString() === pageId);
+    if (!page) {
+      throw new NotFoundException('Page not found');
+    }
+
+    return page;
   }
 
   /**
@@ -138,7 +156,10 @@ export class JournalsService {
    * @param page.title (optional) The title of the page.
    * @param page.content (optional) The content of the page.
    * @param page.date (optional) The date of the page.
+   * @param user The user who is updating a page in the journal.
    * @returns The updated journal.
+   * @throws {NotFoundException} When the journal or page with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async updatePage(
     id: string,
@@ -152,34 +173,36 @@ export class JournalsService {
       updateQuery[`pages.$.${key}`] = page[key];
     });
 
-    const journal = await this.journalsModel.findById(id);
+    const journal = await this.getJournal(id, user);
 
-    if (journal.userId.toString() !== user._id.toString()) {
-      throw new UnauthorizedException();
-    }
+    const pageDocument = await this.getPage(journal, pageId);
+    pageDocument.set(page);
+    await pageDocument.save();
+    await journal.save();
 
-    journal.$where = { 'pages._id': pageId };
-
-    return journal.set(updateQuery).toObject();
+    return journal.toObject();
   }
 
   /**
    * Deletes a page from a journal.
    * @param id The id of the journal to delete a page from.
    * @param pageId The id of the page to delete.
+   * @param user The user who is deleting a page from the journal.
    * @returns The updated journal.
+   * @throws {NotFoundException} When the journal or page with the given id does not exist.
+   * @throws {ForbiddenException} When the user is not the owner of the journal.
    */
   async deletePage(
     id: string,
     pageId: string,
     user: SecureUsersDocument,
   ): Promise<JournalsDto> {
-    const journal = await this.journalsModel.findById(id);
+    const journal = await this.getJournal(id, user);
 
-    if (journal.userId.toString() !== user._id.toString()) {
-      throw new UnauthorizedException();
-    }
+    const pageDocument = await this.getPage(journal, pageId);
+    await pageDocument.deleteOne();
+    await journal.save();
 
-    return journal.set({ $pull: { pages: { _id: pageId } } }).toObject();
+    return journal.toObject();
   }
 }
