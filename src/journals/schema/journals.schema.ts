@@ -2,22 +2,22 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument, Types } from 'mongoose';
 
-import { PagesDto, PagesSchema } from './pages.schema';
+import { Pages, PagesSchema } from './pages.schema';
 
 /**
  * The journal schema.
+ * Each journal must have a title.
+ * It contains an array of pages.
  */
 @Schema({
   collection: 'journals',
   timestamps: true,
 })
 export class Journals {
-  @ApiProperty({
-    description: 'The title of the journal.',
-    example: 'My first journal',
-    required: true,
-    type: String,
-  })
+  /**
+   * The title of the journal.
+   * @example 'My first journal'
+   */
   @Prop({
     required: true,
     trim: true,
@@ -29,73 +29,48 @@ export class Journals {
   })
   title: string;
 
-  @ApiProperty({
-    description: 'The description of the journal.',
-    example: 'This is my first journal.',
-    required: false,
-    type: String,
-  })
+  /**
+   * The description of the journal. This is optional.
+   * @example 'This is my first journal.'
+   */
   @Prop({ required: false, trim: true, type: String })
   description?: string;
 
-  @ApiProperty({
-    description: 'The pages of the journal.',
-    example: [
-      {
-        _id: '60e9b9e0f2f2c8a0b0e9b9e0',
-        content: 'This is my first page.',
-        createdAt: '2021-07-12T14:00:00.000Z',
-        date: '2021-01-01',
-        title: 'My first page',
-        updatedAt: '2021-07-12T14:00:00.000Z',
-      },
-    ],
-    isArray: true,
-    required: false,
-    type: [PagesDto],
-  })
+  /**
+   * The pages of the journal. This is optional.
+   * @requires PagesSchema
+   */
   @Prop({ default: [], required: false, type: [PagesSchema] })
-  pages?: PagesDto[];
+  pages?: Pages[];
 
+  /**
+   * The id of the user that owns the journal.
+   * @example '60e9b9e0f2f2c8a0b0e9b9e0'
+   */
+  @Prop({ immutable: true, ref: 'users', required: true, type: Types.ObjectId })
   @ApiProperty({
-    description: 'The id of the user who created the journal.',
+    description: 'The id of the user that owns the journal.',
     example: '60e9b9e0f2f2c8a0b0e9b9e0',
-    required: true,
-    type: Types.ObjectId,
-  })
-  @Prop({ ref: 'users', required: true, type: Types.ObjectId })
-  userId: Types.ObjectId;
-}
-
-/**
- * The DTO for the Journal model.
- */
-export class JournalsDto extends Journals {
-  @ApiProperty({
-    description: 'The id of the journal.',
-    example: '60e9b9e0f2f2c8a0b0e9b9e0',
-    required: true,
     type: String,
   })
-  _id: Types.ObjectId;
-
-  @ApiProperty({
-    description: 'The date the journal was created.',
-    example: '2021-07-14T12:00:00.000Z',
-    required: true,
-    type: Date,
-  })
-  createdAt: Date;
-
-  @ApiProperty({
-    description: 'The date the journal was last updated.',
-    example: '2021-07-14T12:00:00.000Z',
-    required: true,
-    type: Date,
-  })
-  updatedAt: Date;
+  userId: Types.ObjectId;
 }
 
 export type JournalsDocument = HydratedDocument<Journals>;
 
 export const JournalsSchema = SchemaFactory.createForClass(Journals);
+
+JournalsSchema.alias('_id', 'journalId');
+
+JournalsSchema.set('toObject', {
+  aliases: true,
+  transform: (doc, ret) => {
+    ret.pages = doc.pages?.map((page) => {
+      return page.toObject();
+    });
+    delete ret._id;
+    delete ret.id;
+  },
+  versionKey: false,
+  virtuals: ['journalId'],
+});

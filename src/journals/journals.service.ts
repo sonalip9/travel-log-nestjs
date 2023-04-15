@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Journals, JournalsDocument } from './schema/journals.schema';
+import { JournalsDto } from './dto/journals.dto';
+import { Journals } from './schema/journals.schema';
 import { Pages } from './schema/pages.schema';
 
 import { SecureUsersDocument } from '@users';
@@ -20,16 +25,18 @@ export class JournalsService {
    * @param journalData.description (optional) The description of the journal.
    * @returns The created journal.
    */
-  async createJournal(journalData: Journals): Promise<JournalsDocument> {
-    return this.journalsModel.create(journalData);
+  async createJournal(journalData: Journals): Promise<JournalsDto> {
+    const journalDocument = await this.journalsModel.create(journalData);
+    return journalDocument.toObject();
   }
 
   /**
    * Fetches all journals from the database.
    * @returns List of all journals.
    */
-  async getAllJournals(user: SecureUsersDocument): Promise<JournalsDocument[]> {
-    return this.journalsModel.find({ userId: user._id }).exec();
+  async getAllJournals(user: SecureUsersDocument): Promise<JournalsDto[]> {
+    const journals = await this.journalsModel.find({ userId: user._id }).exec();
+    return journals.map((journal) => journal.toObject());
   }
 
   /**
@@ -40,7 +47,7 @@ export class JournalsService {
   async getJournal(
     id: string,
     user: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     const journal = await this.journalsModel.findById(id);
     if (journal.userId.toString() !== user._id.toString()) {
       throw new UnauthorizedException();
@@ -50,6 +57,11 @@ export class JournalsService {
 
   /**
    * Updates a journal with the given id.
+   *
+   * The method first finds the journal by the journal id. If it
+   * doesn't exist, it throws an error. If it does exist but doesn't belong
+   * to the user, it throws an error. If it does exist and belongs to the user,
+   * it updates the journal with the given data and returns the updated journal.
    * @param id The id of the journal to update.
    * @param updateJournalData The data to update the journal with.
    * @param updateJournalData.title (optional) The title of the journal.
@@ -60,13 +72,19 @@ export class JournalsService {
     id: string,
     updateJournalData: Partial<Journals>,
     users: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     const journal = await this.journalsModel.findOne({ _id: id });
+
+    if (!journal) {
+      throw new NotFoundException();
+    }
+
     if (journal.userId.toString() !== users._id.toString()) {
       throw new UnauthorizedException();
     }
 
-    return journal.set(updateJournalData);
+    journal.set(updateJournalData);
+    return (await journal.save()).toObject();
   }
 
   /**
@@ -77,7 +95,7 @@ export class JournalsService {
   async deleteJournal(
     id: string,
     user: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     const journal = await this.journalsModel.findById(id);
     if (journal.userId.toString() !== user._id.toString()) {
       throw new UnauthorizedException();
@@ -99,14 +117,17 @@ export class JournalsService {
     id: string,
     page: Pages,
     user: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     const journal = await this.journalsModel.findById(id);
 
     if (journal.userId.toString() !== user._id.toString()) {
       throw new UnauthorizedException();
     }
 
-    return journal.set({ $push: { pages: page } });
+    journal.pages.push(page);
+    await journal.save();
+
+    return journal.toObject();
   }
 
   /**
@@ -124,7 +145,7 @@ export class JournalsService {
     pageId: string,
     page: Partial<Pages>,
     user: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     // Create the update query.
     const updateQuery = {};
     Object.keys(page).forEach((key) => {
@@ -137,13 +158,9 @@ export class JournalsService {
       throw new UnauthorizedException();
     }
 
-    return this.journalsModel
-      .findOneAndUpdate(
-        { _id: id, 'pages._id': pageId },
-        { $set: updateQuery },
-        { new: true },
-      )
-      .exec();
+    journal.$where = { 'pages._id': pageId };
+
+    return journal.set(updateQuery).toObject();
   }
 
   /**
@@ -156,13 +173,13 @@ export class JournalsService {
     id: string,
     pageId: string,
     user: SecureUsersDocument,
-  ): Promise<JournalsDocument> {
+  ): Promise<JournalsDto> {
     const journal = await this.journalsModel.findById(id);
 
     if (journal.userId.toString() !== user._id.toString()) {
       throw new UnauthorizedException();
     }
 
-    return journal.set({ $pull: { pages: { _id: pageId } } });
+    return journal.set({ $pull: { pages: { _id: pageId } } }).toObject();
   }
 }
