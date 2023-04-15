@@ -1,12 +1,14 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bycrypt from 'bcrypt';
-import { Model } from 'mongoose';
+import { Error, Model } from 'mongoose';
 
 import { SecureUsersDocument, Users } from './schema/users.schema';
 
@@ -34,10 +36,26 @@ export class UsersService {
       throw new ConflictException('User already exists');
     }
 
-    const user = await this.usersModel.create(loginDto);
-    return user.toObject();
+    try {
+      const user = await this.usersModel.create(loginDto);
+      return user.toObject();
+    } catch (err) {
+      if (err instanceof Error.ValidationError) {
+        throw new BadRequestException(err.message);
+      } else {
+        throw new InternalServerErrorException('Something went wrong', {
+          cause: err,
+        });
+      }
+    }
   }
 
+  /**
+   * Finds a user by its username.
+   * @param username The email address used as user's username.
+   * @returns The user's data.
+   * @throws HttpException if the user doesn't exist.
+   */
   async findByUsername(username: string): Promise<Users> {
     return (await this.usersModel.findOne({ username }).exec()).toObject();
   }
