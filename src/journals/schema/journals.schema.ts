@@ -56,6 +56,15 @@ export class Journals {
   })
   @Prop({ default: [], required: false, type: [PagesSchema] })
   pages?: PagesDto[];
+
+  @ApiProperty({
+    description: 'The id of the user who created the journal.',
+    example: '60e9b9e0f2f2c8a0b0e9b9e0',
+    required: true,
+    type: Types.ObjectId,
+  })
+  @Prop({ ref: 'users', required: true, type: Types.ObjectId })
+  userId: Types.ObjectId;
 }
 
 /**

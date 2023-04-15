@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Journals, JournalsDocument } from './schema/journals.schema';
 import { Pages } from './schema/pages.schema';
+
+import { SecureUsersDocument } from '@users';
 
 @Injectable()
 export class JournalsService {
@@ -26,8 +28,8 @@ export class JournalsService {
    * Fetches all journals from the database.
    * @returns List of all journals.
    */
-  async getAllJournals(): Promise<JournalsDocument[]> {
-    return this.journalsModel.find().exec();
+  async getAllJournals(user: SecureUsersDocument): Promise<JournalsDocument[]> {
+    return this.journalsModel.find({ userId: user._id }).exec();
   }
 
   /**
@@ -35,8 +37,15 @@ export class JournalsService {
    * @param id The id of the journal to fetch.
    * @returns THe journal with the given id.
    */
-  async getJournal(id: string): Promise<JournalsDocument> {
-    return this.journalsModel.findById(id);
+  async getJournal(
+    id: string,
+    user: SecureUsersDocument,
+  ): Promise<JournalsDocument> {
+    const journal = await this.journalsModel.findById(id);
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
+    }
+    return journal.toObject();
   }
 
   /**
@@ -50,10 +59,14 @@ export class JournalsService {
   async updateJournal(
     id: string,
     updateJournalData: Partial<Journals>,
+    users: SecureUsersDocument,
   ): Promise<JournalsDocument> {
-    return this.journalsModel.findByIdAndUpdate(id, updateJournalData, {
-      new: true,
-    });
+    const journal = await this.journalsModel.findOne({ _id: id });
+    if (journal.userId.toString() !== users._id.toString()) {
+      throw new UnauthorizedException();
+    }
+
+    return journal.set(updateJournalData);
   }
 
   /**
@@ -61,8 +74,16 @@ export class JournalsService {
    * @param id The id of the journal to delete.
    * @returns The deleted journal.
    */
-  async deleteJournal(id: string): Promise<JournalsDocument> {
-    return this.journalsModel.findByIdAndDelete(id);
+  async deleteJournal(
+    id: string,
+    user: SecureUsersDocument,
+  ): Promise<JournalsDocument> {
+    const journal = await this.journalsModel.findById(id);
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
+    }
+
+    return journal.deleteOne();
   }
 
   /**
@@ -74,10 +95,18 @@ export class JournalsService {
    * @param page.date The date of the page.
    * @returns The updated journal.
    */
-  async addPage(id: string, page: Pages): Promise<JournalsDocument> {
-    return this.journalsModel
-      .findByIdAndUpdate(id, { $push: { pages: page } }, { new: true })
-      .exec();
+  async addPage(
+    id: string,
+    page: Pages,
+    user: SecureUsersDocument,
+  ): Promise<JournalsDocument> {
+    const journal = await this.journalsModel.findById(id);
+
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
+    }
+
+    return journal.set({ $push: { pages: page } });
   }
 
   /**
@@ -94,12 +123,19 @@ export class JournalsService {
     id: string,
     pageId: string,
     page: Partial<Pages>,
+    user: SecureUsersDocument,
   ): Promise<JournalsDocument> {
     // Create the update query.
     const updateQuery = {};
     Object.keys(page).forEach((key) => {
       updateQuery[`pages.$.${key}`] = page[key];
     });
+
+    const journal = await this.journalsModel.findById(id);
+
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
+    }
 
     return this.journalsModel
       .findOneAndUpdate(
@@ -116,9 +152,17 @@ export class JournalsService {
    * @param pageId The id of the page to delete.
    * @returns The updated journal.
    */
-  async deletePage(id: string, pageId: string): Promise<JournalsDocument> {
-    return this.journalsModel
-      .findByIdAndUpdate(id, { $pull: { pages: { _id: pageId } } })
-      .exec();
+  async deletePage(
+    id: string,
+    pageId: string,
+    user: SecureUsersDocument,
+  ): Promise<JournalsDocument> {
+    const journal = await this.journalsModel.findById(id);
+
+    if (journal.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
+    }
+
+    return journal.set({ $pull: { pages: { _id: pageId } } });
   }
 }

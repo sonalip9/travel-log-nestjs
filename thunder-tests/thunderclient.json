@@ -1,6 +1,10 @@
 [
   {
     "_id": "558df140-40b4-4e3b-96f4-096b8103ac0c",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "body": {
       "form": [],
       "raw": "{\n  \"title\": \"My first journal\",\n  \"description\": \"This is my first journal. I will use it for noting my first trip.\"\n}",
@@ -11,21 +15,38 @@
     "created": "2023-04-09T14:38:10.910Z",
     "headers": [],
     "method": "POST",
-    "modified": "2023-04-09T14:39:55.434Z",
+    "modified": "2023-04-15T07:01:23.781Z",
     "name": "Create Journal",
     "params": [],
     "sortNum": 10000,
-    "tests": [],
+    "tests": [
+      {
+        "action": "equal",
+        "custom": "json.userId",
+        "type": "json-query",
+        "value": "{{userId}}"
+      },
+      {
+        "action": "setto",
+        "custom": "json._id",
+        "type": "set-env-var",
+        "value": "{{journalId}}"
+      }
+    ],
     "url": "{{base_url}}/journals"
   },
   {
     "_id": "b3309823-a688-4c36-8b1c-ad1f7d2253e3",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T15:59:52.579Z",
     "headers": [],
     "method": "GET",
-    "modified": "2023-04-09T16:00:11.336Z",
+    "modified": "2023-04-15T08:54:20.480Z",
     "name": "Get all journals",
     "params": [],
     "sortNum": 20000,
@@ -34,18 +55,22 @@
   },
   {
     "_id": "48dec2e0-0490-4f9f-b7b9-26e3a546e999",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:00:33.588Z",
     "headers": [],
     "method": "GET",
-    "modified": "2023-04-09T16:09:35.011Z",
+    "modified": "2023-04-15T07:07:22.681Z",
     "name": "Get a journal",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "6432ce3c285bf12c80ec2c75"
+        "value": "{{journalId}}"
       }
     ],
     "sortNum": 30000,
@@ -54,9 +79,13 @@
   },
   {
     "_id": "f8c43d22-320d-44a3-8a00-a47453de5ab4",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "body": {
       "form": [],
-      "raw": "{\n  \"description\": \"\"\n}",
+      "raw": "{\n  \"description\": \"Updated description\"\n}",
       "type": "json"
     },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
@@ -64,13 +93,13 @@
     "created": "2023-04-09T16:10:03.558Z",
     "headers": [],
     "method": "PATCH",
-    "modified": "2023-04-09T16:10:56.122Z",
+    "modified": "2023-04-15T08:54:12.747Z",
     "name": "Update a journal",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "6432ce3c285bf12c80ec2c75"
+        "value": "{{journalId}}"
       }
     ],
     "sortNum": 40000,
@@ -79,18 +108,22 @@
   },
   {
     "_id": "1592331f-bffa-4c06-bd20-0ff1588516ca",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "",
     "created": "2023-04-09T16:11:29.645Z",
     "headers": [],
     "method": "DELETE",
-    "modified": "2023-04-09T16:11:56.014Z",
+    "modified": "2023-04-15T08:54:05.662Z",
     "name": "Delete a journal",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "6432ce3c285bf12c80ec2c75"
+        "value": "{{journalId}}"
       }
     ],
     "sortNum": 50000,
@@ -99,6 +132,10 @@
   },
   {
     "_id": "741d0a29-c175-4d5c-9a4c-6d84ec818f85",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "body": {
       "form": [],
       "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
@@ -109,21 +146,32 @@
     "created": "2023-04-09T16:12:31.250Z",
     "headers": [],
     "method": "POST",
-    "modified": "2023-04-09T16:13:24.476Z",
+    "modified": "2023-04-15T07:41:41.721Z",
     "name": "Create a page",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "64312e9a572f0b72bce643dd"
+        "value": "{{journalId}}"
       }
     ],
     "sortNum": 60000,
-    "tests": [],
+    "tests": [
+      {
+        "action": "setto",
+        "custom": "json.pages[-1]._id",
+        "type": "set-env-var",
+        "value": "{{pageId}}"
+      }
+    ],
     "url": "{{base_url}}/journals/{id}/pages"
   },
   {
     "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "body": {
       "form": [],
       "raw": "{\n  \"title\": \"My first page\",\n  \"content\": \"I am testing the api via thunder client.\"\n}",
@@ -134,18 +182,18 @@
     "created": "2023-04-09T16:15:07.122Z",
     "headers": [],
     "method": "PATCH",
-    "modified": "2023-04-09T16:25:07.817Z",
+    "modified": "2023-04-15T08:46:53.105Z",
     "name": "Update a page",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "64312e9a572f0b72bce643dd"
+        "value": "{{journalId}}"
       },
       {
         "isPath": true,
         "name": "pageId",
-        "value": "6432e4244b6603bbf4ad7c66"
+        "value": "{{pageId}}"
       }
     ],
     "sortNum": 80000,
@@ -154,23 +202,27 @@
   },
   {
     "_id": "b2b5f9a1-5b1f-4b1f-8f9f-1f1f2f3f4f5f",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
     "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
     "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
     "created": "2023-04-09T16:25:35.000Z",
     "headers": [],
     "method": "DELETE",
-    "modified": "2023-04-09T16:29:28.369Z",
+    "modified": "2023-04-15T08:49:01.312Z",
     "name": "Delete a page",
     "params": [
       {
         "isPath": true,
         "name": "id",
-        "value": "64312e9a572f0b72bce643dd"
+        "value": "{{journalId}}"
       },
       {
         "isPath": true,
         "name": "pageId",
-        "value": "6432e4244b6603bbf4ad7c66"
+        "value": "{{pageId}}"
       }
     ],
     "sortNum": 90000,
@@ -193,34 +245,40 @@
   },
   {
     "_id": "cce0e27e-22ea-4eea-9c99-00b889cc59fc",
+    "body": {
+      "form": [],
+      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
+      "type": "json"
+    },
     "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
     "containerId": "",
-    "name": "Login",
-    "url": "{{base_url}}/auth/login",
-    "method": "POST",
-    "sortNum": 10000,
     "created": "2023-04-11T16:55:59.934Z",
-    "modified": "2023-04-14T16:40:41.910Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "method": "POST",
+    "modified": "2023-04-15T06:53:08.830Z",
+    "name": "Login",
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"123456\"\n}",
-      "form": []
-    },
+    "sortNum": 10000,
     "tests": [
       {
-        "type": "set-env-var",
-        "custom": "json.accessToken",
         "action": "setto",
+        "custom": "json.accessToken",
+        "type": "set-env-var",
         "value": "{{auth}}"
+      },
+      {
+        "action": "setto",
+        "custom": "json.user.id",
+        "type": "set-env-var",
+        "value": "{{userId}}"
       }
-    ]
+    ],
+    "url": "{{base_url}}/auth/login"
   },
   {
     "_id": "8277f32f-5a69-4c09-8cee-c4903cebde77",
