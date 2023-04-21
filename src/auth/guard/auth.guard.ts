@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import { IS_PUBLIC_KEY } from '@common/decorator/public.decorator';
+import { IS_REFRESH_KEY } from '@common/decorator/refresh.decorator';
 import { UsersService } from '@users';
 
 @Injectable()
@@ -39,6 +40,11 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
+    const isRefresh = this.reflector.getAllAndOverride<boolean>(
+      IS_REFRESH_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
@@ -46,6 +52,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
+        ignoreExpiration: isRefresh,
         secret: process.env.JWT_SECRET,
       });
 
