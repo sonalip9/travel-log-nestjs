@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -8,10 +8,13 @@ import {
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { LoginResponse } from './interface/login-res.interface';
 
 import { Public } from '@common/decorator/public.decorator';
+import { Refresh } from '@common/decorator/refresh.decorator';
+import { ReqUser } from '@common/decorator/req-user.decorator';
 import { Error } from '@common/interface/error.interface';
-import { Users } from '@users';
+import { SecureUsersDocument, Users } from '@users';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -75,5 +78,19 @@ export class AuthController {
   })
   async login(@Body() user: LoginDto): Promise<any> {
     return this.authService.validateUser(user);
+  }
+
+  /**
+   * Refreshes the access token.
+   * @param user The user's data.
+   * @returns The user's data with the access token.
+   * @throws HttpException if the user doesn't exist.
+   * @throws HttpException if the user's data is invalid.
+   * @throws HttpException if the refresh token is invalid.
+   */
+  @Get('/refresh')
+  @Refresh()
+  async refresh(@ReqUser() user: SecureUsersDocument): Promise<LoginResponse> {
+    return this.authService.login(user);
   }
 }
