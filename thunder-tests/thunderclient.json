@@ -52,7 +52,7 @@
       }
     ],
     "method": "GET",
-    "modified": "2023-04-15T15:15:43.039Z",
+    "modified": "2023-04-21T15:40:58.763Z",
     "name": "Get all journals",
     "params": [],
     "sortNum": 20000,
@@ -176,7 +176,7 @@
       }
     ],
     "method": "POST",
-    "modified": "2023-04-15T15:15:07.015Z",
+    "modified": "2023-04-21T15:41:55.566Z",
     "name": "Create a page",
     "params": [
       {
@@ -295,7 +295,7 @@
     "_id": "cce0e27e-22ea-4eea-9c99-00b889cc59fc",
     "body": {
       "form": [],
-      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.cm\",\n  \"password\": \"123456\"\n}",
+      "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"sonali123\"\n}",
       "type": "json"
     },
     "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
@@ -313,7 +313,7 @@
       }
     ],
     "method": "POST",
-    "modified": "2023-04-15T15:45:01.538Z",
+    "modified": "2023-04-21T15:41:13.672Z",
     "name": "Login",
     "params": [],
     "sortNum": 10000,
@@ -374,5 +374,36 @@
       }
     ],
     "url": "{{base_url}}/auth/signup"
+  },
+  {
+    "_id": "18ee8450-09d9-4690-9908-5540c6e3779a",
+    "auth": {
+      "bearer": "{{auth}}",
+      "type": "bearer"
+    },
+    "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+    "containerId": "",
+    "created": "2023-04-21T15:59:09.216Z",
+    "headers": [
+      {
+        "isDisabled": true,
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)"
+      }
+    ],
+    "method": "GET",
+    "modified": "2023-04-21T16:44:21.267Z",
+    "name": "Refresh Auth Token",
+    "params": [],
+    "sortNum": 30000,
+    "tests": [
+      {
+        "action": "setto",
+        "custom": "json.accessToken",
+        "type": "set-env-var",
+        "value": "{{auth}}"
+      }
+    ],
+    "url": "{{base_url}}/auth/refresh"
   }
 ]

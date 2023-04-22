@@ -5,23 +5,23 @@
     "data": [
       {
         "name": "base_url",
-        "value": "http://localhost:3000"
+        "value": "http://localhost:3001"
       },
       {
         "name": "auth",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDM2ZjJjZGU4ZTBhM2RlNmM2ZWY2ODAiLCJ1c2VybmFtZSI6InNvbmFsaS5wYXJla2g5MTJAZ21haWwuY29tIiwiaWF0IjoxNjgxNTcxMTI4LCJleHAiOjE2ODE1NzQ3Mjh9.wzXuXwc-0voEK5OiBJa7VAiDmnQWUDP3LpP7TXcxBpE"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDNhZDE0YzU4YmQ2ZDVmNTA3NDhmZGQiLCJ1c2VybmFtZSI6InNvbmFsaS5wYXJla2g5MTJAZ21haWwuY29tIiwiaWF0IjoxNjgyMDk5MjI2LCJleHAiOjE2ODIwOTkyMzZ9.Zwi96ddwL4tfp_6K23BUcBSo8hgTUWWP6ryTDY49ZUc"
       },
       {
         "name": "userId",
-        "value": "6436f2cde8e0a3de6c6ef680"
+        "value": "643ad14c58bd6d5f50748fdd"
       },
       {
         "name": "journalId",
-        "value": "643a73538bd76fbf55aaff62"
+        "value": "6442bf717e0bd57982be7977"
       },
       {
         "name": "pageId",
-        "value": "643a553595d5b7353374c006"
+        "value": "6442aec3ec6356986881da4b"
       }
     ],
     "default": true,
