@@ -1,0 +1,124 @@
+{
+    "_id": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+    "colName": "Auth",
+    "created": "2023-04-11T16:55:51.849Z",
+    "folders": [],
+    "sortNum": 20000,
+    "requests": [
+        {
+            "_id": "cce0e27e-22ea-4eea-9c99-00b889cc59fc",
+            "body": {
+                "form": [],
+                "raw": "{\n  \"username\": \"sonali.parekh912@gmail.com\",\n  \"password\": \"sonali123\"\n}",
+                "type": "json"
+            },
+            "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+            "containerId": "",
+            "created": "2023-04-11T16:55:59.934Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "POST",
+            "modified": "2023-04-21T15:41:13.672Z",
+            "name": "Login",
+            "params": [],
+            "sortNum": 10000,
+            "tests": [
+                {
+                    "action": "setto",
+                    "custom": "json.accessToken",
+                    "type": "set-env-var",
+                    "value": "{{auth}}"
+                },
+                {
+                    "action": "setto",
+                    "custom": "json.user.id",
+                    "type": "set-env-var",
+                    "value": "{{userId}}"
+                }
+            ],
+            "url": "{{base_url}}/auth/login"
+        },
+        {
+            "_id": "8277f32f-5a69-4c09-8cee-c4903cebde77",
+            "body": {
+                "form": [],
+                "raw": "{\n  \"username\": \"sonali.parekh912@gmail.co\",\n  \"password\": \"123456\"\n}",
+                "type": "json"
+            },
+            "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+            "containerId": "",
+            "created": "2023-04-12T16:03:51.858Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "POST",
+            "modified": "2023-04-15T15:53:48.596Z",
+            "name": "Sign Up",
+            "params": [],
+            "sortNum": 20000,
+            "tests": [
+                {
+                    "action": "setto",
+                    "custom": "json.accessToken",
+                    "type": "set-env-var",
+                    "value": "{{auth}}"
+                },
+                {
+                    "action": "setto",
+                    "custom": "json.user.id",
+                    "type": "set-env-var",
+                    "value": "{{userId}}"
+                }
+            ],
+            "url": "{{base_url}}/auth/signup"
+        },
+        {
+            "_id": "18ee8450-09d9-4690-9908-5540c6e3779a",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "colId": "3dda1b4f-8afc-4f34-a105-d4d261c095a1",
+            "containerId": "",
+            "created": "2023-04-21T15:59:09.216Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "GET",
+            "modified": "2023-04-21T16:44:21.267Z",
+            "name": "Refresh Auth Token",
+            "params": [],
+            "sortNum": 30000,
+            "tests": [
+                {
+                    "action": "setto",
+                    "custom": "json.accessToken",
+                    "type": "set-env-var",
+                    "value": "{{auth}}"
+                }
+            ],
+            "url": "{{base_url}}/auth/refresh"
+        }
+    ]
+}
