@@ -1,7 +1,7 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
-    MONGO_DB: string;
-    JWT_SECRET: string;
-    JWT_EXPIRES_IN: string;
+    readonly MONGO_DB: string;
+    readonly JWT_SECRET: string;
+    readonly JWT_EXPIRES_IN: string;
   }
 }
