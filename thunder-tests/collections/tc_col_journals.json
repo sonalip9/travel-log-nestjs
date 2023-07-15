@@ -1,0 +1,309 @@
+{
+    "_id": "b238ac11-6532-40c6-a19c-089464eb7680",
+    "colName": "Journals",
+    "created": "2023-04-09T14:35:51.753Z",
+    "folders": [
+        {
+            "_id": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "containerId": "",
+            "created": "2023-04-09T16:12:23.845Z",
+            "name": "Pages",
+            "sortNum": 10000
+        }
+    ],
+    "sortNum": 10000,
+    "requests": [
+        {
+            "_id": "558df140-40b4-4e3b-96f4-096b8103ac0c",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "body": {
+                "form": [],
+                "raw": "{\n  \"title\": \"My first journal\",\n  \"description\": \"This is my first journal. I will use it for noting my first trip.\"\n}",
+                "type": "json"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T14:38:10.910Z",
+            "headers": [],
+            "method": "POST",
+            "modified": "2023-04-15T15:15:33.609Z",
+            "name": "Create Journal",
+            "params": [],
+            "sortNum": 10000,
+            "tests": [
+                {
+                    "action": "equal",
+                    "custom": "json.userId",
+                    "type": "json-query",
+                    "value": "{{userId}}"
+                },
+                {
+                    "action": "setto",
+                    "custom": "json.journalId",
+                    "type": "set-env-var",
+                    "value": "{{journalId}}"
+                }
+            ],
+            "url": "{{base_url}}/journals"
+        },
+        {
+            "_id": "b3309823-a688-4c36-8b1c-ad1f7d2253e3",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T15:59:52.579Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "GET",
+            "modified": "2023-04-21T15:40:58.763Z",
+            "name": "Get all journals",
+            "params": [],
+            "sortNum": 20000,
+            "tests": [],
+            "url": "{{base_url}}/journals/all"
+        },
+        {
+            "_id": "48dec2e0-0490-4f9f-b7b9-26e3a546e999",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T16:00:33.588Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "GET",
+            "modified": "2023-04-15T15:15:48.870Z",
+            "name": "Get a journal",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                }
+            ],
+            "sortNum": 30000,
+            "tests": [],
+            "url": "{{base_url}}/journals/{id}"
+        },
+        {
+            "_id": "f8c43d22-320d-44a3-8a00-a47453de5ab4",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "body": {
+                "form": [],
+                "raw": "{\n  \"description\": \"This is my first journal.\"\n}",
+                "type": "json"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T16:10:03.558Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "PATCH",
+            "modified": "2023-04-15T15:15:55.541Z",
+            "name": "Update a journal",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                }
+            ],
+            "sortNum": 40000,
+            "tests": [],
+            "url": "{{base_url}}/journals/{id}"
+        },
+        {
+            "_id": "1592331f-bffa-4c06-bd20-0ff1588516ca",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T16:11:29.645Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "DELETE",
+            "modified": "2023-04-15T15:16:00.847Z",
+            "name": "Delete a journal",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                }
+            ],
+            "sortNum": 50000,
+            "tests": [],
+            "url": "{{base_url}}/journals/{id}"
+        },
+        {
+            "_id": "741d0a29-c175-4d5c-9a4c-6d84ec818f85",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "body": {
+                "form": [],
+                "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
+                "type": "json"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "created": "2023-04-09T16:12:31.250Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "POST",
+            "modified": "2023-04-21T15:41:55.566Z",
+            "name": "Create a page",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                }
+            ],
+            "sortNum": 60000,
+            "tests": [
+                {
+                    "action": "setto",
+                    "custom": "json.pages[-1].pageId",
+                    "type": "set-env-var",
+                    "value": "{{pageId}}"
+                }
+            ],
+            "url": "{{base_url}}/journals/{id}/pages"
+        },
+        {
+            "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "body": {
+                "form": [],
+                "raw": "{\n  \"title\": \"My first page\",\n  \"content\": \"I am testing the api via thunder client.\"\n}",
+                "type": "json"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "created": "2023-04-09T16:15:07.122Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "PATCH",
+            "modified": "2023-04-15T15:15:17.776Z",
+            "name": "Update a page",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                },
+                {
+                    "isPath": true,
+                    "name": "pageId",
+                    "value": "{{pageId}}"
+                }
+            ],
+            "sortNum": 80000,
+            "tests": [],
+            "url": "{{base_url}}/journals/{id}/pages/{pageId}"
+        },
+        {
+            "_id": "b2b5f9a1-5b1f-4b1f-8f9f-1f1f2f3f4f5f",
+            "auth": {
+                "bearer": "{{auth}}",
+                "type": "bearer"
+            },
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "created": "2023-04-09T16:25:35.000Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "DELETE",
+            "modified": "2023-04-15T15:15:24.755Z",
+            "name": "Delete a page",
+            "params": [
+                {
+                    "isPath": true,
+                    "name": "id",
+                    "value": "{{journalId}}"
+                },
+                {
+                    "isPath": true,
+                    "name": "pageId",
+                    "value": "{{pageId}}"
+                }
+            ],
+            "sortNum": 90000,
+            "tests": [],
+            "url": "{{base_url}}/journals/{id}/pages/{pageId}"
+        },
+        {
+            "_id": "eac9fb97-629e-4ece-9e22-330ad0a86f75",
+            "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
+            "containerId": "",
+            "created": "2023-04-09T18:44:16.335Z",
+            "headers": [
+                {
+                    "isDisabled": true,
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)"
+                }
+            ],
+            "method": "GET",
+            "modified": "2023-04-15T15:16:07.977Z",
+            "name": "Health Check",
+            "params": [],
+            "sortNum": 100000,
+            "tests": [],
+            "url": "{{base_url}}/journals/healthCheck"
+        }
+    ]
+}
