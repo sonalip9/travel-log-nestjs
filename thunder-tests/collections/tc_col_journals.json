@@ -15,200 +15,188 @@
     "requests": [
         {
             "_id": "558df140-40b4-4e3b-96f4-096b8103ac0c",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
-            "body": {
-                "form": [],
-                "raw": "{\n  \"title\": \"My first journal\",\n  \"description\": \"This is my first journal. I will use it for noting my first trip.\"\n}",
-                "type": "json"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "",
-            "created": "2023-04-09T14:38:10.910Z",
-            "headers": [],
-            "method": "POST",
-            "modified": "2023-04-15T15:15:33.609Z",
             "name": "Create Journal",
-            "params": [],
+            "url": "{{base_url}}/journals",
+            "method": "POST",
             "sortNum": 10000,
+            "created": "2023-04-09T14:38:10.910Z",
+            "modified": "2023-07-16T07:17:33.881Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"My first journal\",\n  \"description\": \"This is my first journal. I will use it for noting my first trip.\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
             "tests": [
                 {
-                    "action": "equal",
-                    "custom": "json.userId",
                     "type": "json-query",
+                    "custom": "json.userId",
+                    "action": "equal",
                     "value": "{{userId}}"
                 },
                 {
-                    "action": "setto",
-                    "custom": "json.journalId",
                     "type": "set-env-var",
+                    "custom": "json.journalId",
+                    "action": "setto",
                     "value": "{{journalId}}"
                 }
-            ],
-            "url": "{{base_url}}/journals"
+            ]
         },
         {
             "_id": "b3309823-a688-4c36-8b1c-ad1f7d2253e3",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "",
-            "created": "2023-04-09T15:59:52.579Z",
-            "headers": [
-                {
-                    "isDisabled": true,
-                    "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
-                }
-            ],
-            "method": "GET",
-            "modified": "2023-04-21T15:40:58.763Z",
             "name": "Get all journals",
-            "params": [],
+            "url": "{{base_url}}/journals/all",
+            "method": "GET",
             "sortNum": 20000,
-            "tests": [],
-            "url": "{{base_url}}/journals/all"
+            "created": "2023-04-09T15:59:52.579Z",
+            "modified": "2023-07-23T07:57:09.004Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
+            "tests": []
         },
         {
             "_id": "48dec2e0-0490-4f9f-b7b9-26e3a546e999",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "",
-            "created": "2023-04-09T16:00:33.588Z",
-            "headers": [
-                {
-                    "isDisabled": true,
-                    "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
-                }
-            ],
-            "method": "GET",
-            "modified": "2023-04-15T15:15:48.870Z",
             "name": "Get a journal",
+            "url": "{{base_url}}/journals/{id}",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-04-09T16:00:33.588Z",
+            "modified": "2023-07-23T07:57:18.015Z",
+            "headers": [],
             "params": [
                 {
-                    "isPath": true,
                     "name": "id",
-                    "value": "{{journalId}}"
+                    "value": "{{journalId}}",
+                    "isPath": true
                 }
             ],
-            "sortNum": 30000,
-            "tests": [],
-            "url": "{{base_url}}/journals/{id}"
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
+            "tests": []
         },
         {
             "_id": "f8c43d22-320d-44a3-8a00-a47453de5ab4",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
-            "body": {
-                "form": [],
-                "raw": "{\n  \"description\": \"This is my first journal.\"\n}",
-                "type": "json"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "",
+            "name": "Update a journal",
+            "url": "{{base_url}}/journals/{id}",
+            "method": "PATCH",
+            "sortNum": 40000,
             "created": "2023-04-09T16:10:03.558Z",
+            "modified": "2023-07-16T07:20:01.137Z",
             "headers": [
                 {
-                    "isDisabled": true,
                     "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
                 }
             ],
-            "method": "PATCH",
-            "modified": "2023-04-15T15:15:55.541Z",
-            "name": "Update a journal",
             "params": [
                 {
-                    "isPath": true,
                     "name": "id",
-                    "value": "{{journalId}}"
+                    "value": "{{journalId}}",
+                    "isPath": true
                 }
             ],
-            "sortNum": 40000,
-            "tests": [],
-            "url": "{{base_url}}/journals/{id}"
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"description\": \"This is my first journal.\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
+            "tests": []
         },
         {
             "_id": "1592331f-bffa-4c06-bd20-0ff1588516ca",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "",
+            "name": "Delete a journal",
+            "url": "{{base_url}}/journals/{id}",
+            "method": "DELETE",
+            "sortNum": 50000,
             "created": "2023-04-09T16:11:29.645Z",
+            "modified": "2023-07-16T15:28:31.607Z",
             "headers": [
                 {
-                    "isDisabled": true,
                     "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
                 }
             ],
-            "method": "DELETE",
-            "modified": "2023-04-15T15:16:00.847Z",
-            "name": "Delete a journal",
             "params": [
                 {
-                    "isPath": true,
                     "name": "id",
-                    "value": "{{journalId}}"
+                    "value": "{{deleteId}}",
+                    "isPath": true
                 }
             ],
-            "sortNum": 50000,
-            "tests": [],
-            "url": "{{base_url}}/journals/{id}"
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
+            "tests": []
         },
         {
             "_id": "741d0a29-c175-4d5c-9a4c-6d84ec818f85",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
-            "body": {
-                "form": [],
-                "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
-                "type": "json"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "name": "Create a page",
+            "url": "{{base_url}}/journals/{id}/pages",
+            "method": "POST",
+            "sortNum": 60000,
             "created": "2023-04-09T16:12:31.250Z",
+            "modified": "2023-07-22T09:53:10.093Z",
             "headers": [
                 {
-                    "isDisabled": true,
                     "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
                 }
             ],
-            "method": "POST",
-            "modified": "2023-04-21T15:41:55.566Z",
-            "name": "Create a page",
             "params": [
                 {
-                    "isPath": true,
                     "name": "id",
-                    "value": "{{journalId}}"
+                    "value": "64bb90adeff466bb687baea0",
+                    "isPath": true
                 }
             ],
-            "sortNum": 60000,
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
             "tests": [
                 {
-                    "action": "setto",
-                    "custom": "json.pages[-1].pageId",
                     "type": "set-env-var",
+                    "custom": "json.pages[-1].pageId",
+                    "action": "setto",
                     "value": "{{pageId}}"
                 }
-            ],
-            "url": "{{base_url}}/journals/{id}/pages"
+            ]
         },
         {
             "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
