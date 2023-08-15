@@ -165,7 +165,7 @@
             "method": "POST",
             "sortNum": 60000,
             "created": "2023-04-09T16:12:31.250Z",
-            "modified": "2023-07-22T09:53:10.093Z",
+            "modified": "2023-08-15T10:22:05.127Z",
             "headers": [
                 {
                     "name": "User-Agent",
@@ -181,9 +181,24 @@
                 }
             ],
             "body": {
-                "type": "json",
-                "raw": "{\n  \"title\": \"First Page\",\n  \"date\": \"2023-04-09\"\n}",
-                "form": []
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "title",
+                        "value": "First Page"
+                    },
+                    {
+                        "name": "date",
+                        "value": "2023-04-09"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "photo",
+                        "value": "../IMG-20200209-WA0008.jpg"
+                    }
+                ]
             },
             "auth": {
                 "type": "bearer",
@@ -200,43 +215,58 @@
         },
         {
             "_id": "8b11f3ab-2ad1-44c9-9519-bf301ce17e3a",
-            "auth": {
-                "bearer": "{{auth}}",
-                "type": "bearer"
-            },
-            "body": {
-                "form": [],
-                "raw": "{\n  \"title\": \"My first page\",\n  \"content\": \"I am testing the api via thunder client.\"\n}",
-                "type": "json"
-            },
             "colId": "b238ac11-6532-40c6-a19c-089464eb7680",
             "containerId": "58280ff4-a34e-4545-bf27-d492ce1df6dc",
+            "name": "Update a page",
+            "url": "{{base_url}}/journals/{id}/pages/{pageId}",
+            "method": "PATCH",
+            "sortNum": 80000,
             "created": "2023-04-09T16:15:07.122Z",
+            "modified": "2023-08-15T12:37:53.895Z",
             "headers": [
                 {
-                    "isDisabled": true,
                     "name": "User-Agent",
-                    "value": "Thunder Client (https://www.thunderclient.com)"
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
                 }
             ],
-            "method": "PATCH",
-            "modified": "2023-04-15T15:15:17.776Z",
-            "name": "Update a page",
             "params": [
                 {
-                    "isPath": true,
                     "name": "id",
-                    "value": "{{journalId}}"
+                    "value": "{{journalId}}",
+                    "isPath": true
                 },
                 {
-                    "isPath": true,
                     "name": "pageId",
-                    "value": "{{pageId}}"
+                    "value": "{{pageId}}",
+                    "isPath": true
                 }
             ],
-            "sortNum": 80000,
-            "tests": [],
-            "url": "{{base_url}}/journals/{id}/pages/{pageId}"
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "title",
+                        "value": "My first page"
+                    },
+                    {
+                        "name": "content",
+                        "value": "I am testing the api via thunder client."
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "photo",
+                        "value": "../IMG-20200209-WA0008.jpg"
+                    }
+                ]
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{auth}}"
+            },
+            "tests": []
         },
         {
             "_id": "b2b5f9a1-5b1f-4b1f-8f9f-1f1f2f3f4f5f",
