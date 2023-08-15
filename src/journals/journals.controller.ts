@@ -6,7 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -229,12 +232,18 @@ export class JournalsController {
     message: 'Journal not found',
   })
   @ForbiddenResponse('When the user is not the owner of the journal.')
+  @UseInterceptors(FileInterceptor('photo'))
   async createPage(
     @Param('id') id: string,
     @Body() createPageDto: CreatePageDto,
     @ReqUser() user: SecureUsersDocument,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<JournalsDto> {
-    return this.journalService.addPage(id, createPageDto, user);
+    return this.journalService.addPage(
+      id,
+      { ...createPageDto, photo: file },
+      user,
+    );
   }
 
   /**
@@ -280,13 +289,20 @@ export class JournalsController {
     message: 'Page not found',
   })
   @ForbiddenResponse('When the user is not the owner of the journal.')
+  @UseInterceptors(FileInterceptor('photo'))
   async updatePage(
     @Param('id') id: string,
     @Param('pageId') pageId: string,
     @Body() createPageDto: Partial<CreatePageDto>,
     @ReqUser() user: SecureUsersDocument,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<JournalsDto> {
-    return this.journalService.updatePage(id, pageId, createPageDto, user);
+    return this.journalService.updatePage(
+      id,
+      pageId,
+      { ...createPageDto, photo: file },
+      user,
+    );
   }
 
   /**

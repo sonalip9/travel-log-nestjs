@@ -1,5 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+
+class PhotoFile {
+  @Prop({ type: String })
+  fieldname: string;
+
+  @Prop({ type: String })
+  originalname: string;
+
+  @Prop({ type: String })
+  mimetype: string;
+
+  @Prop({ type: Types.Buffer })
+  buffer: Buffer;
+}
 
 /**
  * The Page schema.
@@ -25,6 +39,9 @@ export class Pages {
    */
   @Prop({ required: true, type: String })
   title: string;
+
+  @Prop({ type: PhotoFile })
+  photo?: PhotoFile;
 }
 
 export type PagesDocument = HydratedDocument<typeof Pages>;
