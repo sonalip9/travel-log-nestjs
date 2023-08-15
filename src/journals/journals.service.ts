@@ -130,7 +130,14 @@ export class JournalsService {
   ): Promise<JournalsDto> {
     const journal = await this.getJournal(id, user);
 
-    journal.pages.push(page);
+    const photoObject = page.photo && {
+      buffer: page.photo.buffer,
+      fieldname: page.photo.fieldname,
+      mimetype: page.photo.mimetype,
+      originalname: page.photo.originalname,
+    };
+
+    journal.pages.push({ ...page, photo: photoObject });
     await journal.save();
 
     return journal.toObject();
@@ -167,9 +174,20 @@ export class JournalsService {
     page: Partial<Pages>,
     user: SecureUsersDocument,
   ): Promise<JournalsDto> {
+    const photoObject = page.photo && {
+      buffer: page.photo.buffer,
+      fieldname: page.photo.fieldname,
+      mimetype: page.photo.mimetype,
+      originalname: page.photo.originalname,
+    };
+
     // Create the update query.
     const updateQuery = {};
     Object.keys(page).forEach((key) => {
+      if (key === 'photo') {
+        updateQuery[`pages.$.photo`] = photoObject;
+        return;
+      }
       updateQuery[`pages.$.${key}`] = page[key];
     });
 
