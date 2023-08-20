@@ -1,7 +1,10 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { Readable } from 'stream';
 
-class PhotoFile {
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+
+@Schema({ timestamps: true })
+class PhotoFile implements Express.Multer.File {
   @Prop({ type: String })
   fieldname: string;
 
@@ -9,9 +12,27 @@ class PhotoFile {
   originalname: string;
 
   @Prop({ type: String })
+  encoding: string;
+
+  @Prop({ type: String })
   mimetype: string;
 
-  @Prop({ type: Types.Buffer })
+  @Prop({ type: Number })
+  size: number;
+
+  @Prop({ type: Readable })
+  stream: Readable;
+
+  @Prop({ type: String })
+  destination: string;
+
+  @Prop({ type: String })
+  filename: string;
+
+  @Prop({ type: String })
+  path: string;
+
+  @Prop({ type: Buffer })
   buffer: Buffer;
 }
 
