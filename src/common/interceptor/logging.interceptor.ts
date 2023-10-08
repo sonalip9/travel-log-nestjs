@@ -1,7 +1,16 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 
+/**
+ * Interceptor that logs incoming requests and outgoing responses.
+ */
 export class LoggingInterceptor implements NestInterceptor {
+  /**
+   * Intercepts incoming requests and outgoing responses to log them.
+   * @param context The execution context.
+   * @param next The next call handler.
+   * @returns An observable or promise of an observable.
+   */
   intercept(
     context: ExecutionContext,
     next: CallHandler<any>,
